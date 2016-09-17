@@ -13,8 +13,9 @@
 		A73018FC1D8C401A006C8B64 /* TutorialApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73018FB1D8C401A006C8B64 /* TutorialApplicationTests.m */; };
 		A730190E1D8C4249006C8B64 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A730190D1D8C4249006C8B64 /* ViewController.m */; };
 		A73019131D8C425E006C8B64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A73019101D8C425E006C8B64 /* AppDelegate.m */; };
-		A73019141D8C425E006C8B64 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A73019111D8C425E006C8B64 /* Info.plist */; };
 		A73019151D8C425E006C8B64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A73019121D8C425E006C8B64 /* main.m */; };
+		A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */; };
+		A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A71D8D277000BB7F80 /* RestAPI.m */; };
 		C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */; };
 		F26141515A9189DC279FEDCA /* libPods-TutorialApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,10 @@
 		A73019101D8C425E006C8B64 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Application/Main/AppDelegate.m; sourceTree = "<group>"; };
 		A73019111D8C425E006C8B64 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Application/Main/Info.plist; sourceTree = "<group>"; };
 		A73019121D8C425E006C8B64 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Application/Main/main.m; sourceTree = "<group>"; };
+		A76E39A01D8D214400BB7F80 /* FlieralAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralAPIManager.h; path = SDK/RestAPI/FlieralAPIManager.h; sourceTree = "<group>"; };
+		A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralAPIManager.m; path = SDK/RestAPI/FlieralAPIManager.m; sourceTree = "<group>"; };
+		A76E39A61D8D277000BB7F80 /* RestAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestAPI.h; path = SDK/RestAPI/RestAPI.h; sourceTree = "<group>"; };
+		A76E39A71D8D277000BB7F80 /* RestAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestAPI.m; path = SDK/RestAPI/RestAPI.m; sourceTree = "<group>"; };
 		E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TutorialApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C8F9DE394203EE2EE402B /* Pods-TutorialApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TutorialApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TutorialApplicationTests/Pods-TutorialApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,8 +185,20 @@
 		A730190B1D8C41CA006C8B64 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				A76E399F1D8D20F700BB7F80 /* RestAPI */,
 			);
 			name = SDK;
+			sourceTree = "<group>";
+		};
+		A76E399F1D8D20F700BB7F80 /* RestAPI */ = {
+			isa = PBXGroup;
+			children = (
+				A76E39A01D8D214400BB7F80 /* FlieralAPIManager.h */,
+				A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */,
+				A76E39A61D8D277000BB7F80 /* RestAPI.h */,
+				A76E39A71D8D277000BB7F80 /* RestAPI.m */,
+			);
+			name = RestAPI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,7 +291,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A73019141D8C425E006C8B64 /* Info.plist in Resources */,
 				A73018F11D8C401A006C8B64 /* LaunchScreen.storyboard in Resources */,
 				A73018EE1D8C401A006C8B64 /* Assets.xcassets in Resources */,
 				A73018EC1D8C401A006C8B64 /* Main.storyboard in Resources */,
@@ -390,6 +406,8 @@
 			files = (
 				A73019131D8C425E006C8B64 /* AppDelegate.m in Sources */,
 				A73019151D8C425E006C8B64 /* main.m in Sources */,
+				A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */,
+				A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */,
 				A730190E1D8C4249006C8B64 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
