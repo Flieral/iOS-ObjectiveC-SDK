@@ -16,6 +16,10 @@
 		A73019151D8C425E006C8B64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A73019121D8C425E006C8B64 /* main.m */; };
 		A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */; };
 		A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A71D8D277000BB7F80 /* RestAPI.m */; };
+		A76E39AC1D8D3FCB00BB7F80 /* PlacementModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */; };
+		A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39AE1D8D413100BB7F80 /* PlacementController.m */; };
+		A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */; };
+		A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */; };
 		C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */; };
 		F26141515A9189DC279FEDCA /* libPods-TutorialApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */; };
 /* End PBXBuildFile section */
@@ -52,6 +56,14 @@
 		A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralAPIManager.m; path = SDK/RestAPI/FlieralAPIManager.m; sourceTree = "<group>"; };
 		A76E39A61D8D277000BB7F80 /* RestAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestAPI.h; path = SDK/RestAPI/RestAPI.h; sourceTree = "<group>"; };
 		A76E39A71D8D277000BB7F80 /* RestAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestAPI.m; path = SDK/RestAPI/RestAPI.m; sourceTree = "<group>"; };
+		A76E39AA1D8D3FCB00BB7F80 /* PlacementModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementModel.h; path = SDK/Placement/PlacementModel.h; sourceTree = "<group>"; };
+		A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementModel.m; path = SDK/Placement/PlacementModel.m; sourceTree = "<group>"; };
+		A76E39AD1D8D413100BB7F80 /* PlacementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementController.h; path = SDK/Placement/PlacementController.h; sourceTree = "<group>"; };
+		A76E39AE1D8D413100BB7F80 /* PlacementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementController.m; path = SDK/Placement/PlacementController.m; sourceTree = "<group>"; };
+		A76E39B11D8D542900BB7F80 /* FlieralSDKEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralSDKEngine.h; path = SDK/Engine/FlieralSDKEngine.h; sourceTree = "<group>"; };
+		A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralSDKEngine.m; path = SDK/Engine/FlieralSDKEngine.m; sourceTree = "<group>"; };
+		A76E39B41D8D76AD00BB7F80 /* FlieralPlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralPlacementManager.h; path = SDK/Engine/FlieralPlacementManager.h; sourceTree = "<group>"; };
+		A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralPlacementManager.m; path = SDK/Engine/FlieralPlacementManager.m; sourceTree = "<group>"; };
 		E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TutorialApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C8F9DE394203EE2EE402B /* Pods-TutorialApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TutorialApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TutorialApplicationTests/Pods-TutorialApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -185,6 +197,9 @@
 		A730190B1D8C41CA006C8B64 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				A76E39B71D8D7DAC00BB7F80 /* Extension */,
+				A76E39B01D8D531F00BB7F80 /* Engine */,
+				A76E39A91D8D3E3900BB7F80 /* Placement */,
 				A76E399F1D8D20F700BB7F80 /* RestAPI */,
 			);
 			name = SDK;
@@ -199,6 +214,35 @@
 				A76E39A71D8D277000BB7F80 /* RestAPI.m */,
 			);
 			name = RestAPI;
+			sourceTree = "<group>";
+		};
+		A76E39A91D8D3E3900BB7F80 /* Placement */ = {
+			isa = PBXGroup;
+			children = (
+				A76E39AA1D8D3FCB00BB7F80 /* PlacementModel.h */,
+				A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */,
+				A76E39AD1D8D413100BB7F80 /* PlacementController.h */,
+				A76E39AE1D8D413100BB7F80 /* PlacementController.m */,
+			);
+			name = Placement;
+			sourceTree = "<group>";
+		};
+		A76E39B01D8D531F00BB7F80 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A76E39B11D8D542900BB7F80 /* FlieralSDKEngine.h */,
+				A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */,
+				A76E39B41D8D76AD00BB7F80 /* FlieralPlacementManager.h */,
+				A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */,
+			);
+			name = Engine;
+			sourceTree = "<group>";
+		};
+		A76E39B71D8D7DAC00BB7F80 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,9 +449,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73019131D8C425E006C8B64 /* AppDelegate.m in Sources */,
+				A76E39AC1D8D3FCB00BB7F80 /* PlacementModel.m in Sources */,
 				A73019151D8C425E006C8B64 /* main.m in Sources */,
 				A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */,
+				A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */,
+				A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */,
 				A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */,
+				A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */,
 				A730190E1D8C4249006C8B64 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
