@@ -20,6 +20,7 @@
 		A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39AE1D8D413100BB7F80 /* PlacementController.m */; };
 		A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */; };
 		A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */; };
+		A76E39BA1D8D9AAE00BB7F80 /* NSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */; };
 		C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */; };
 		F26141515A9189DC279FEDCA /* libPods-TutorialApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,8 @@
 		A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralSDKEngine.m; path = SDK/Engine/FlieralSDKEngine.m; sourceTree = "<group>"; };
 		A76E39B41D8D76AD00BB7F80 /* FlieralPlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralPlacementManager.h; path = SDK/Engine/FlieralPlacementManager.h; sourceTree = "<group>"; };
 		A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralPlacementManager.m; path = SDK/Engine/FlieralPlacementManager.m; sourceTree = "<group>"; };
+		A76E39B81D8D9AAE00BB7F80 /* NSQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSQueue.h; path = SDK/Extension/NSQueue.h; sourceTree = "<group>"; };
+		A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSQueue.m; path = SDK/Extension/NSQueue.m; sourceTree = "<group>"; };
 		E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TutorialApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C8F9DE394203EE2EE402B /* Pods-TutorialApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TutorialApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TutorialApplicationTests/Pods-TutorialApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -241,6 +244,8 @@
 		A76E39B71D8D7DAC00BB7F80 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A76E39B81D8D9AAE00BB7F80 /* NSQueue.h */,
+				A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -450,6 +455,7 @@
 			files = (
 				A73019131D8C425E006C8B64 /* AppDelegate.m in Sources */,
 				A76E39AC1D8D3FCB00BB7F80 /* PlacementModel.m in Sources */,
+				A76E39BA1D8D9AAE00BB7F80 /* NSQueue.m in Sources */,
 				A73019151D8C425E006C8B64 /* main.m in Sources */,
 				A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */,
 				A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */,
