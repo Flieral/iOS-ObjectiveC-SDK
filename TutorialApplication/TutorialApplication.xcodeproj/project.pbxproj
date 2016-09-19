@@ -23,6 +23,7 @@
 		A76E39BA1D8D9AAE00BB7F80 /* NSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */; };
 		A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39BE1D8DA7A500BB7F80 /* LogService.m */; };
 		A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C21D8DA8A800BB7F80 /* LogCenter.m */; };
+		A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C51D8E71A800BB7F80 /* APIManager.m */; };
 		C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */; };
 		F26141515A9189DC279FEDCA /* libPods-TutorialApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,8 @@
 		A76E39BE1D8DA7A500BB7F80 /* LogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogService.m; path = SDK/Extension/Logger/Model/LogService.m; sourceTree = "<group>"; };
 		A76E39C11D8DA8A800BB7F80 /* LogCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogCenter.h; path = SDK/Extension/Logger/Controller/LogCenter.h; sourceTree = "<group>"; };
 		A76E39C21D8DA8A800BB7F80 /* LogCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogCenter.m; path = SDK/Extension/Logger/Controller/LogCenter.m; sourceTree = "<group>"; };
+		A76E39C41D8E71A800BB7F80 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIManager.h; path = SDK/RestAPI/APIManager.h; sourceTree = "<group>"; };
+		A76E39C51D8E71A800BB7F80 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIManager.m; path = SDK/RestAPI/APIManager.m; sourceTree = "<group>"; };
 		E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TutorialApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C8F9DE394203EE2EE402B /* Pods-TutorialApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TutorialApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TutorialApplicationTests/Pods-TutorialApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -221,6 +224,8 @@
 				A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */,
 				A76E39A61D8D277000BB7F80 /* RestAPI.h */,
 				A76E39A71D8D277000BB7F80 /* RestAPI.m */,
+				A76E39C41D8E71A800BB7F80 /* APIManager.h */,
+				A76E39C51D8E71A800BB7F80 /* APIManager.m */,
 			);
 			name = RestAPI;
 			sourceTree = "<group>";
@@ -496,6 +501,7 @@
 				A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */,
 				A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */,
 				A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */,
+				A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */,
 				A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */,
 				A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */,
 				A730190E1D8C4249006C8B64 /* ViewController.m in Sources */,
@@ -636,6 +642,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = KJFB7R3TBL;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = TutorialApplication/Application/Main/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -650,6 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = KJFB7R3TBL;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = TutorialApplication/Application/Main/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
