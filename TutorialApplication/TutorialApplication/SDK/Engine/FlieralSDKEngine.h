@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FlieralPlacementManager.h"
+
+@class FlieralPlacementManager;
 
 typedef NS_ENUM(NSInteger, Priority)
 {
@@ -34,8 +35,8 @@ typedef NS_ENUM(NSInteger, CachedContentNumber)
 - (void)AddPlacement:(nonnull NSString *)placementHashID Priority:(Priority)priority;
 - (void)AddPlacement:(nonnull NSString *)placementHashID CachedContentNumber:(CachedContentNumber)cachedContentNumber;
 
-- (void)StartEingine;
+- (void)StartEngine;
 
-- (nullable FlieralPlacementManager *)GetPlacementAtIndex:(NSInteger)index;
+- (nullable FlieralPlacementManager *)GetPlacementWithHashID:(nonnull NSString *)placementHashID;
 
 @end
