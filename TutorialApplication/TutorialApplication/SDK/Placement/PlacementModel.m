@@ -7,11 +7,15 @@
 //
 
 #import "PlacementModel.h"
+#import "NSQueue.h"
+
+#define ONLINEQUEUECAPACITYKEY		3
+#define OFFLINEQUEUECAPACITYKEY		2
 
 @interface PlacementModel ()
 
-@property (nonatomic, strong) UIView *parentView;
-@property (nonatomic, strong) UIWebView *placementView;
+@property (nonatomic, strong) NSQueue *onlineQueue;
+@property (nonatomic, strong) NSQueue *offlineQueue;
 
 @end
 
@@ -19,46 +23,85 @@
 
 #pragma mark - Placement Life Cycle
 
-- (nullable id)initWithParentView:(nonnull UIView *)parentView
+- (nullable id)initWithHashID:(nonnull NSString *)hashID
 {
 	self = [super init];
 	if (self)
 	{
+		_placementHashID = hashID;
 		_placementView = [[UIWebView alloc] init];
-		_parentView = parentView;
+		
+		_onlineQueue = [[NSQueue alloc] initWithIdentifier:_placementHashID Capacity:ONLINEQUEUECAPACITYKEY];
+		_offlineQueue = [[NSQueue alloc] initWithIdentifier:_placementHashID Capacity:OFFLINEQUEUECAPACITYKEY];
+		
+		[_onlineQueue useAutomaticCachePolicyInOperations];
+		[_offlineQueue useAutomaticCachePolicyInOperations];
 	}
 	return self;
 }
 
-#pragma mark - Parent View Setting
-
-- (void)setParentView:(nonnull UIView *)parentView
-{
-	_parentView = parentView;
-}
-
 #pragma mark - Content Setting
 
-- (void)fillWithContentAtURL:(nonnull NSURL *)url
+- (void)setOnlineModeWithContentAtURL:(nonnull NSURL *)url
 {
+	[_onlineQueue enqueue:url];
+}
+
+- (void)setOfflineModeWithContentAtURL:(nonnull NSURL *)url
+{
+	[_offlineQueue enqueue:url];
+}
+
+- (nullable UIWebView *)getOnlineModeWithContentAtURL
+{
+	NSURL *url = (NSURL *)[_onlineQueue dequeue];
+	CGPoint point = [self checkPosition];
+	[_placementView setFrame:CGRectMake(point.x, point.y, _backendSize.width, _backendSize.height)];
 	[_placementView loadRequest:[NSURLRequest requestWithURL:url]];
+	return _placementView;
+}
+
+- (nullable UIWebView *)getOfflineModeWithContentAtURL
+{
+	NSURL *url = (NSURL *)[_offlineQueue dequeue];
+	CGPoint point = [self checkPosition];
+	[_placementView setFrame:CGRectMake(point.x, point.y, _backendSize.width, _backendSize.height)];
+	[_placementView loadRequest:[NSURLRequest requestWithURL:url]];
+	return _placementView;
 }
 
 #pragma mark - Frame Setting
 
-- (void)setPosition:(CGPoint) point
+- (CGPoint)checkPosition
 {
-	[_placementView setFrame:CGRectMake(point.x, point.y, _placementView.frame.size.width, _placementView.frame.size.height)];
+	CGPoint point;
+	switch (_placementType)
+	{
+		case SmallBanner:
+		
+			break;
+
+		case MediumBanner:
+			
+			break;
+
+		case LargeBanner:
+			
+			break;
+
+		case MediumInterstitial:
+			
+			break;
+
+		case LargeInterstitial:
+			
+			break;
+
+		default:
+			break;
+	}
+	return point;
 }
 
-- (void)setSize:(CGSize) size
-{
-	[_placementView setFrame:CGRectMake(_placementView.frame.origin.x, _placementView.frame.origin.y, size.width, size.height)];
-}
-
-- (void)setRect:(CGRect) rect
-{
-	[_placementView setFrame:rect];
-}
 
 @end
