@@ -43,4 +43,17 @@
 										  }];
 }
 
++ (void)getUserSettingFromIPAPISuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
+								failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
+{
+	[[RestAPI sharedService] getMethodWithQueryString:@"ip-api.com/json" Parameters:nil Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+		
+		successBlock(task, responseObject);
+		
+	} failedBlock:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+		
+		failedBlock(task, error);
+	}];
+}
+
 @end
