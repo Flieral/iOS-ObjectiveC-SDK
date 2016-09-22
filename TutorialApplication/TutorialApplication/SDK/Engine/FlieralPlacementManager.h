@@ -7,13 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface FlieralPlacementManager : NSObject
 
-@property (nonatomic, strong) NSString  * _Nonnull placementHashID;
+- (nullable id)initWithHashID:(nullable NSString *)hashID;
+
+- (void)SetDefaultPosition:(CGPoint)point;
+- (void)SetParentView:(nonnull UIView *)parentView;
 
 - (void)SetPreLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) preLoadBlock;
-- (void)SetDidLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) preLoadBlock;
+- (void)SetDidLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) didLoadBlock;
 - (void)SetFailedLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) failedLoadBlock;
 - (void)SetWillAppearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) willAppearBlock;
 - (void)SetDidAppearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) didAppearBlock;
