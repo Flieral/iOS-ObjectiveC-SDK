@@ -24,6 +24,11 @@
 		A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39BE1D8DA7A500BB7F80 /* LogService.m */; };
 		A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C21D8DA8A800BB7F80 /* LogCenter.m */; };
 		A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C51D8E71A800BB7F80 /* APIManager.m */; };
+		A7F485261D92DBD60060A057 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F485251D92DBD60060A057 /* SystemConfiguration.framework */; };
+		A7F4852A1D92DC500060A057 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F485291D92DC500060A057 /* Reachability.m */; };
+		A7F485311D92E00D0060A057 /* GBPing.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F4852D1D92E00D0060A057 /* GBPing.m */; };
+		A7F485321D92E00D0060A057 /* GBPingSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F4852F1D92E00D0060A057 /* GBPingSummary.m */; };
+		A7F485351D92E07B0060A057 /* MonitorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F485341D92E07B0060A057 /* MonitorManager.m */; };
 		C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */; };
 		F26141515A9189DC279FEDCA /* libPods-TutorialApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */; };
 /* End PBXBuildFile section */
@@ -76,6 +81,16 @@
 		A76E39C21D8DA8A800BB7F80 /* LogCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogCenter.m; path = SDK/Extension/Logger/Controller/LogCenter.m; sourceTree = "<group>"; };
 		A76E39C41D8E71A800BB7F80 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIManager.h; path = SDK/RestAPI/APIManager.h; sourceTree = "<group>"; };
 		A76E39C51D8E71A800BB7F80 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIManager.m; path = SDK/RestAPI/APIManager.m; sourceTree = "<group>"; };
+		A7F485251D92DBD60060A057 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A7F485281D92DC500060A057 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SDK/Extension/Reachability/Reachability.h; sourceTree = "<group>"; };
+		A7F485291D92DC500060A057 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SDK/Extension/Reachability/Reachability.m; sourceTree = "<group>"; };
+		A7F4852C1D92E00D0060A057 /* GBPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBPing.h; path = SDK/Extension/Monitoring/GBPing.h; sourceTree = "<group>"; };
+		A7F4852D1D92E00D0060A057 /* GBPing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBPing.m; path = SDK/Extension/Monitoring/GBPing.m; sourceTree = "<group>"; };
+		A7F4852E1D92E00D0060A057 /* GBPingSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBPingSummary.h; path = SDK/Extension/Monitoring/GBPingSummary.h; sourceTree = "<group>"; };
+		A7F4852F1D92E00D0060A057 /* GBPingSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBPingSummary.m; path = SDK/Extension/Monitoring/GBPingSummary.m; sourceTree = "<group>"; };
+		A7F485301D92E00D0060A057 /* ICMPHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICMPHeader.h; path = SDK/Extension/Monitoring/ICMPHeader.h; sourceTree = "<group>"; };
+		A7F485331D92E07B0060A057 /* MonitorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MonitorManager.h; path = SDK/Extension/Monitoring/MonitorManager.h; sourceTree = "<group>"; };
+		A7F485341D92E07B0060A057 /* MonitorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MonitorManager.m; path = SDK/Extension/Monitoring/MonitorManager.m; sourceTree = "<group>"; };
 		E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TutorialApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC6C8F9DE394203EE2EE402B /* Pods-TutorialApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TutorialApplicationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TutorialApplicationTests/Pods-TutorialApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F485261D92DBD60060A057 /* SystemConfiguration.framework in Frameworks */,
 				C7959E6F29765692C5878A92 /* libPods-TutorialApplication.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +119,7 @@
 		5402E90B466D0A70860ED7E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A7F485251D92DBD60060A057 /* SystemConfiguration.framework */,
 				778289F11D0747658E0E5584 /* libPods-TutorialApplication.a */,
 				E1FD52DF21D7FB84A644AA58 /* libPods-TutorialApplicationTests.a */,
 			);
@@ -255,6 +272,8 @@
 		A76E39B71D8D7DAC00BB7F80 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A7F4852B1D92DFF40060A057 /* Monitoring */,
+				A7F485271D92DBE10060A057 /* Reachability */,
 				A76E39BB1D8DA73300BB7F80 /* Logger */,
 				A76E39B81D8D9AAE00BB7F80 /* NSQueue.h */,
 				A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */,
@@ -287,6 +306,29 @@
 				A76E39C21D8DA8A800BB7F80 /* LogCenter.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		A7F485271D92DBE10060A057 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				A7F485281D92DC500060A057 /* Reachability.h */,
+				A7F485291D92DC500060A057 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		A7F4852B1D92DFF40060A057 /* Monitoring */ = {
+			isa = PBXGroup;
+			children = (
+				A7F4852C1D92E00D0060A057 /* GBPing.h */,
+				A7F4852D1D92E00D0060A057 /* GBPing.m */,
+				A7F4852E1D92E00D0060A057 /* GBPingSummary.h */,
+				A7F4852F1D92E00D0060A057 /* GBPingSummary.m */,
+				A7F485301D92E00D0060A057 /* ICMPHeader.h */,
+				A7F485331D92E07B0060A057 /* MonitorManager.h */,
+				A7F485341D92E07B0060A057 /* MonitorManager.m */,
+			);
+			name = Monitoring;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -496,14 +538,18 @@
 				A76E39AC1D8D3FCB00BB7F80 /* PlacementModel.m in Sources */,
 				A76E39BA1D8D9AAE00BB7F80 /* NSQueue.m in Sources */,
 				A73019151D8C425E006C8B64 /* main.m in Sources */,
+				A7F4852A1D92DC500060A057 /* Reachability.m in Sources */,
 				A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */,
 				A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */,
 				A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */,
 				A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */,
+				A7F485311D92E00D0060A057 /* GBPing.m in Sources */,
 				A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */,
 				A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */,
 				A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */,
+				A7F485321D92E00D0060A057 /* GBPingSummary.m in Sources */,
 				A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */,
+				A7F485351D92E07B0060A057 /* MonitorManager.m in Sources */,
 				A730190E1D8C4249006C8B64 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
