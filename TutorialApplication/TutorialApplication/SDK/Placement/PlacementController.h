@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, Event)
 - (void)setParentView:(nonnull UIView *)view;
 - (void)setParentViewController:(nonnull UIViewController *)viewController;
 
+- (nullable UIView *)getParentView;
+
 - (void)parseBackendResponse:(nonnull NSDictionary *)response;
 
 - (void)addOnlineContetWithFileName:(nonnull NSString *)fileName;

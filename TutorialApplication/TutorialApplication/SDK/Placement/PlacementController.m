@@ -51,6 +51,11 @@
 	[_placementModel setParentView:viewController.view];
 }
 
+- (nullable UIView *)getParentView
+{
+	return _placementModel.parentView;
+}
+
 #pragma mark - Frame Setting
 
 - (void)setDefaultPosition:(CGPoint) point
