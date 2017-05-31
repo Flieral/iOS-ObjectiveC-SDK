@@ -10,32 +10,17 @@
 
 @class FlieralPlacementManager;
 
-typedef NS_ENUM(NSInteger, Priority)
-{
-	LowPriority = 1,
-	HighPriority = 2
-	
-} priorityState;
-
-typedef NS_ENUM(NSInteger, CachedContentNumber)
-{
-	LowNumber = 1,
-	MidleNumber = 2,
-	HighNumber = 3
-	
-} cachedContentNumberState;
-
 @interface FlieralSDKEngine : NSObject
 
 + (nullable FlieralSDKEngine *)SDKEngine:(nullable NSDictionary *)setting;
 
-- (void)Authenticate:(nonnull NSString *)publisherHashID;
+- (void)Authenticate:(nonnull NSString *)publisherHashID ApplicationHashID:(nonnull NSString *)applicationHashID;
 
 - (void)AddPlacement:(nonnull NSString *)placementHashID;
-- (void)AddPlacement:(nonnull NSString *)placementHashID Priority:(Priority)priority;
-- (void)AddPlacement:(nonnull NSString *)placementHashID CachedContentNumber:(CachedContentNumber)cachedContentNumber;
 
 - (void)StartEngine;
+
+- (BOOL)LogEnable;
 
 - (nullable FlieralPlacementManager *)GetPlacementWithHashID:(nonnull NSString *)placementHashID;
 
