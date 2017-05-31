@@ -10,15 +10,31 @@
 
 @interface APIManager : NSObject
 
-+ (void)sendInformationToBackend:(nonnull NSDictionary *)information
-					SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
-					 failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
++ (void)sendAuthenticationToBackend:(nonnull NSDictionary *)information
+                       SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
+                        failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
 
 + (void)sendReportToBackend:(nonnull NSDictionary *)information
 			   SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
 				failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
 
-+ (void)getUserSettingFromIPAPISuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
-								failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
++ (void)sendUserInformation:(nonnull NSDictionary *)information
+               SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
+                failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
+
++ (void)sendRequestForContent:(nonnull NSArray *)payload
+                 SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
+                  failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
+
++ (void)getUserSettingFromIPAPISuccessBlock:(nullable void (^)(NSData * _Nonnull data, NSURLResponse * _Nonnull response)) successBlock
+                                failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock;
+
++ (void)getUserHashIDWithSuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
+                          failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
+
++ (void)downloadContentWithInformation:(nonnull NSDictionary *)information
+                                  Path:(nonnull NSURL *)path
+                          SuccessBlock:(nullable void (^)(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath)) successBlock
+                           failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock;
 
 @end
