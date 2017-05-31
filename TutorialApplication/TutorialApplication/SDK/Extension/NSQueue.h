@@ -23,4 +23,6 @@
 
 - (nullable id)peekObjectAtIndex:(NSInteger)index;
 
+- (void)clearingQueue;
+
 @end

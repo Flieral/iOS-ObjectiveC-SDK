@@ -60,8 +60,11 @@
 	NSString *key2 = [NSString stringWithFormat:@"%@:%@", QUEUECAPACITYKEY, _identifier];
 	NSString *key3 = [NSString stringWithFormat:@"%@:%@", QUEUECACHEPOLICYKEY, _identifier];
 	
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_data];
+    
 	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-	[ud setObject:_data forKey:key1];
+	[ud setObject:encodedObject forKey:key1];
+    
 	[ud setInteger:_capacity forKey:key2];
 	[ud setBool:_useCachePolicy forKey:key3];
 	[ud synchronize];
@@ -75,9 +78,11 @@
 	
 	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 	_identifier = identifier;
-	_useCachePolicy = [ud boolForKey:key3];
-	_data = [ud objectForKey:key1];
-	_capacity = [ud integerForKey:key2];
+    _capacity = [ud integerForKey:key2];
+    _useCachePolicy = [ud boolForKey:key3];
+    
+    NSData *encodedObject = [ud objectForKey:key1];
+    _data = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
 }
 
 #pragma mark - Queue Operation
@@ -116,6 +121,15 @@
 		object = [self.data objectAtIndex:index];
 
 	return object;
+}
+
+- (void)clearingQueue
+{
+    [self.data removeAllObjects];
+
+    if (_useCachePolicy)
+        [self saveQueueContent];
+
 }
 
 @end
