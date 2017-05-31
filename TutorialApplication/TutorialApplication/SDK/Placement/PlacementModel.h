@@ -9,43 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, Type)
-{
-	SmallBanner = 1,
-	MediumBanner = 2,
-	LargeBanner = 3,
-	MediumInterstitial = 4,
-	LargeInterstitial = 5
-	
-} type;
-
-@interface PlacementModel : NSObject
+@interface PlacementModel : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString  * _Nonnull placementHashID;
+@property (nonatomic, strong) NSString  * _Nonnull applicationHashID;
+@property (nonatomic, strong) NSString  * _Nonnull publisherHashID;
+@property (nonatomic, strong) NSString  * _Nonnull fileURL;
 
-@property (nonatomic, strong) UIView	* _Nonnull parentView;
-@property (nonatomic, strong) UIWebView * _Nonnull placementView;
+@property (nonatomic, strong) NSString  * _Nonnull subcampaignHashID;
+@property (nonatomic, strong) NSString  * _Nonnull campaignHashID;
+@property (nonatomic, strong) NSString  * _Nonnull announcerHashID;
 
-@property (nonatomic) Type		placementType;
+@property (nonatomic, strong) NSURL  * _Nonnull contentURL;
 
-@property (nonatomic) CGPoint	defaultPosition;
-@property (nonatomic) CGPoint	backendPosition;
-@property (nonatomic) CGSize	backendSize;
-
-@property (nonatomic, copy, nullable) void (^preLoadBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didLoadBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^failedLoadBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^willAppearBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didAppearBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^willDisappearBlock)(NSDictionary * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didDisappearBlock)(NSDictionary * _Nonnull details);
-
-- (nullable id)initWithHashID:(nonnull NSString *)hashID;
-
-- (void)setOnlineModeWithContentAtURL:(nonnull NSURL *)url;
-- (void)setOfflineModeWithContentAtURL:(nonnull NSURL *)url;
-
-- (nullable UIWebView *)getOnlineModeWithContentAtURL;
-- (nullable UIWebView *)getOfflineModeWithContentAtURL;
+- (nullable id)initWithModel:(nonnull NSDictionary *)modelInstance;
 
 @end

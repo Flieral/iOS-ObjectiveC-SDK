@@ -7,101 +7,53 @@
 //
 
 #import "PlacementModel.h"
-#import "NSQueue.h"
-
-#define ONLINEQUEUECAPACITYKEY		3
-#define OFFLINEQUEUECAPACITYKEY		2
-
-@interface PlacementModel ()
-
-@property (nonatomic, strong) NSQueue *onlineQueue;
-@property (nonatomic, strong) NSQueue *offlineQueue;
-
-@end
 
 @implementation PlacementModel
 
 #pragma mark - Placement Life Cycle
 
-- (nullable id)initWithHashID:(nonnull NSString *)hashID
+- (nullable id)initWithModel:(nonnull NSDictionary *)modelInstance
 {
 	self = [super init];
 	if (self)
 	{
-		_placementHashID = hashID;
-		_placementView = [[UIWebView alloc] init];
-		
-		_onlineQueue = [[NSQueue alloc] initWithIdentifier:_placementHashID Capacity:ONLINEQUEUECAPACITYKEY];
-		_offlineQueue = [[NSQueue alloc] initWithIdentifier:_placementHashID Capacity:OFFLINEQUEUECAPACITYKEY];
-		
-		[_onlineQueue useAutomaticCachePolicyInOperations];
-		[_offlineQueue useAutomaticCachePolicyInOperations];
+		_placementHashID    = [[modelInstance valueForKey:@"publisherInfo"] valueForKey:@"placementHashId"];
+        _applicationHashID  = [[modelInstance valueForKey:@"publisherInfo"] valueForKey:@"applicationHashId"];
+        _publisherHashID    = [[modelInstance valueForKey:@"publisherInfo"] valueForKey:@"publisherHashId"];
+        _fileURL            = [[modelInstance valueForKey:@"publisherInfo"] valueForKey:@"fileURL"];
+        
+        _subcampaignHashID  = [[modelInstance valueForKey:@"announcerInfo"] valueForKey:@"subcampaignHashId"];
+        _campaignHashID     = [[modelInstance valueForKey:@"announcerInfo"] valueForKey:@"campaignHashId"];
+        _announcerHashID    = [[modelInstance valueForKey:@"announcerInfo"] valueForKey:@"announcerHashId"];
 	}
 	return self;
 }
 
-#pragma mark - Content Setting
-
-- (void)setOnlineModeWithContentAtURL:(nonnull NSURL *)url
+- (void)encodeWithCoder:(NSCoder *)encoder
 {
-	[_onlineQueue enqueue:url];
+    [encoder encodeObject:self.placementHashID      forKey:@"PLACEMENTHASHID"];
+    [encoder encodeObject:self.applicationHashID    forKey:@"APPLICATIONHASHID"];
+    [encoder encodeObject:self.publisherHashID      forKey:@"PUBLISHERHASHID"];
+    [encoder encodeObject:self.fileURL              forKey:@"FILEURL"];
+    [encoder encodeObject:self.subcampaignHashID    forKey:@"SUBCAMPAIGNHASHID"];
+    [encoder encodeObject:self.campaignHashID       forKey:@"CAMPAIGNHASHID"];
+    [encoder encodeObject:self.announcerHashID      forKey:@"ANNOUNCERHASHID"];
 }
 
-- (void)setOfflineModeWithContentAtURL:(nonnull NSURL *)url
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
 {
-	[_offlineQueue enqueue:url];
+    self = [super init];
+    if(self)
+    {
+        self.placementHashID      = [decoder decodeObjectForKey:@"PLACEMENTHASHID"];
+        self.applicationHashID    = [decoder decodeObjectForKey:@"APPLICATIONHASHID"];
+        self.publisherHashID      = [decoder decodeObjectForKey:@"PUBLISHERHASHID"];
+        self.fileURL              = [decoder decodeObjectForKey:@"FILEURL"];
+        self.subcampaignHashID    = [decoder decodeObjectForKey:@"SUBCAMPAIGNHASHID"];
+        self.campaignHashID       = [decoder decodeObjectForKey:@"CAMPAIGNHASHID"];
+        self.announcerHashID      = [decoder decodeObjectForKey:@"ANNOUNCERHASHID"];
+    }
+    return self;
 }
-
-- (nullable UIWebView *)getOnlineModeWithContentAtURL
-{
-	NSURL *url = (NSURL *)[_onlineQueue dequeue];
-	CGPoint point = [self checkPosition];
-	[_placementView setFrame:CGRectMake(point.x, point.y, _backendSize.width, _backendSize.height)];
-	[_placementView loadRequest:[NSURLRequest requestWithURL:url]];
-	return _placementView;
-}
-
-- (nullable UIWebView *)getOfflineModeWithContentAtURL
-{
-	NSURL *url = (NSURL *)[_offlineQueue dequeue];
-	CGPoint point = [self checkPosition];
-	[_placementView setFrame:CGRectMake(point.x, point.y, _backendSize.width, _backendSize.height)];
-	[_placementView loadRequest:[NSURLRequest requestWithURL:url]];
-	return _placementView;
-}
-
-#pragma mark - Frame Setting
-
-- (CGPoint)checkPosition
-{
-	CGPoint point;
-	switch (_placementType)
-	{
-		case SmallBanner:
-		
-			break;
-
-		case MediumBanner:
-			
-			break;
-
-		case LargeBanner:
-			
-			break;
-
-		case MediumInterstitial:
-			
-			break;
-
-		case LargeInterstitial:
-			
-			break;
-
-		default:
-			break;
-	}
-	return point;
-}
-
 
 @end
