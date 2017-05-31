@@ -13,11 +13,7 @@
 #define PACKETLOSTKEY		@"PacketLost"
 #define PACKETRTTKEY		@"PacketRTT"
 
-#define PINGKEY				@"Ping"
-#define NETWORKKEY			@"Network"
-#define SETTINGKEY			@"Setting"
-
-#define STORAGEMONITORINGKEY		@"FlieralSTORAGEMonitoringKey"
+#define PINGKEY				@"PingStorageKey"
 
 @interface MonitorManager () <GBPingDelegate>
 {
@@ -29,84 +25,48 @@
 
 @property (nullable, nonatomic, strong) GBPing *ping;
 @property (nonnull, nonatomic, strong) __block NSDictionary *pingDict;
-@property (nonnull, nonatomic, strong) __block NSDictionary *networkDict;
-@property (nonnull, nonatomic, strong) __block NSDictionary *settingDict;
 
 @property (nonatomic) BOOL pingReady;
-@property (nonatomic) BOOL networkReady;
-@property (nonatomic) BOOL settingReady;
 
 @end
 
 @implementation MonitorManager
 
+- (nonnull instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _pingDict = [NSDictionary dictionary];
+        
+        _ping = [[GBPing alloc] init];
+        _ping.host = @"8.8.8.8";
+        _ping.delegate = self;
+        _ping.timeout = 1.0;
+        _ping.pingPeriod = 0.5;
+        
+        [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)0] forKey:PACKETLOSTKEY];
+        [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)0] forKey:PACKETRTTKEY];
+
+        [self saveData];
+    }
+    return self;
+}
+
 #pragma mark - Ping Issue
 
 - (void)startPinging
 {
-	_pingDict = [NSDictionary dictionary];
-	
-	_ping = [[GBPing alloc] init];
-	_ping.host = @"8.8.8.8";
-	_ping.delegate = self;
-	_ping.timeout = 1.0;
-	_ping.pingPeriod = 0.5;
-	
-	totalNumberOfPackets = 0;
-	numberOfPacketLosts	 = 0;
-	averageRTT			 = 0;
-	
-	_pingReady = false;
-	_settingReady = false;
-	_networkReady = false;
+    totalNumberOfPackets = 0;
+    numberOfPacketLosts	 = 0;
+    averageRTT			 = 0;
+
+    _pingReady = false;
+    
+    [self getPingSetting];
 }
 
-#pragma mark - Delegate
-
-- (void)monitoringCompleteObject
-{
-	if (_pingReady && _settingReady && _networkReady)
-	{
-		NSDictionary *dict = [NSDictionary dictionary];
-		NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-		
-		[dict setValue:_pingDict forKey:PINGKEY];
-		[dict setValue:_networkDict forKey:NETWORKKEY];
-		[dict setValue:_settingDict forKey:SETTINGKEY];
-		
-		[ud setObject:dict forKey:STORAGEMONITORINGKEY];
-		[ud synchronize];
-		
-		[_delegate monitoringCompleteObject:dict];
-	}
-}
-
-#pragma mark - User Setting
-
-- (void)getUserSetting
-{
-	_settingReady = true;
-	[self monitoringCompleteObject];
-}
-
-#pragma mark - Network Setting
-
-- (void)getNetworkSetting
-{
-	[APIManager getUserSettingFromIPAPISuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-		
-		_networkReady = true;
-		_networkDict = (NSDictionary *)responseObject;
-		[_delegate networkResponse:_networkDict];
-		
-		[self monitoringCompleteObject];
-		
-	} failedBlock:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-		
-	}];
-}
-
-#pragma mark - Ping & Delegate
+#pragma mark - Ping Start
 
 - (void)getPingSetting
 {
@@ -114,11 +74,9 @@
 	 {
 		 if (success)
 		 {
-			 //start pinging
 			 [self.ping startPinging];
 			 
-			 //stop it after 5 seconds
-			 [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^(NSTimer * _Nonnull timer)
+			 [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer * _Nonnull timer)
 			  {
 				  [self.ping stop];
 				  self.ping = nil;
@@ -129,18 +87,28 @@
 				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetLost] forKey:PACKETLOSTKEY];
 				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetRTT] forKey:PACKETRTTKEY];
 				  
+                  [self saveData];
+                  
 				  [_delegate monitorResponse:_pingDict];
 				  
 				  _pingReady = true;
-				  [self monitoringCompleteObject];
 			  }];
 		 }
 		 else
 		 {
-			 NSLog(@"failed to start");
+			 NSLog(@"Failed to Start: %@", error);
 		 }
 	 }];
 }
+
+- (void)saveData
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:_pingDict forKey:PINGKEY];
+    [ud synchronize];
+}
+
+#pragma mark - Ping Delegate
 
 -(void)ping:(GBPing *)pinger didReceiveReplyWithSummary:(GBPingSummary *)summary
 {
@@ -160,12 +128,20 @@
 
 -(void)ping:(GBPing *)pinger didSendPingWithSummary:(GBPingSummary *)summary
 {
-	totalNumberOfPackets ++;
+	totalNumberOfPackets++;
 }
 
 -(void)ping:(GBPing *)pinger didTimeoutWithSummary:(GBPingSummary *)summary
 {
-	numberOfPacketLosts ++;
+	numberOfPacketLosts++;
+}
+
+#pragma mark - Monitor Setting
+
+- (nullable NSDictionary *)getMonitorSetting
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    return [ud objectForKey:PINGKEY];
 }
 
 @end

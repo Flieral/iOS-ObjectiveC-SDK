@@ -10,22 +10,20 @@
 
 @protocol MonitorManagerDelegate <NSObject>
 
-@required
-
-- (void)monitoringCompleteObject:(nonnull NSDictionary *)monitor;
-
 @optional
 
 - (void)monitorResponse:(nonnull NSDictionary *)monitor;
-- (void)networkResponse:(nonnull NSDictionary *)network;
-- (void)settingResponse:(nonnull NSDictionary *)setting;
 
 @end
 
 @interface MonitorManager : NSObject
 
+@property _Nonnull id <MonitorManagerDelegate> delegate;
+
+- (nonnull instancetype)init;
+
 - (void)startPinging;
 
-@property _Nonnull id <MonitorManagerDelegate> delegate;
+- (nullable NSDictionary *)getMonitorSetting;
 
 @end
