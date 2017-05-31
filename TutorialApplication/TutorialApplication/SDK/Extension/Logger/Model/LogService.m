@@ -26,9 +26,6 @@
 
 @property (nonatomic,strong) NSObject *userInfo;
 
-@property (nonatomic) BOOL isImportant;
-@property (nonatomic) BOOL isNewEvent;
-
 @end
 
 @implementation LogService
@@ -40,8 +37,6 @@
 	self.eventDescription = eventDescription;
 	self.timeInterval = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
 	self.userInfo = userInfo;
-	self.isNewEvent = YES;
-	self.isImportant = NO;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -51,8 +46,6 @@
 	[aCoder encodeObject:self.timeInterval		forKey:TIME];
 	[aCoder encodeObject:self.logServiceID		forKey:IDENTIFIER];
 	[aCoder encodeObject:self.userInfo			forKey:USERINFO];
-	[aCoder encodeBool:self.isNewEvent			forKey:NEWEVENT];
-	[aCoder encodeBool:self.isImportant			forKey:IMPORTANT];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -63,45 +56,8 @@
 		self.timeInterval		= [aDecoder decodeObjectForKey:TIME];
 		self.logServiceID		= [aDecoder decodeObjectForKey:IDENTIFIER];
 		self.userInfo			= [aDecoder decodeObjectForKey:USERINFO];
-		self.isNewEvent			= [aDecoder decodeBoolForKey:NEWEVENT];
-		self.isImportant		= [aDecoder decodeBoolForKey:IMPORTANT];
 	}
 	return self;
-}
-
-- (void)changeLogToImportant {
-	
-	if (!self.isImportant) {
-		self.isImportant	= YES;
-		self.isNewEvent		= NO;
-	}
-}
-
-- (void)changeLogToOld {
-	
-	if (!self.isImportant) {
-		self.isNewEvent		= NO;
-	}
-}
-
-- (NSString *)logTag {
-	
-	if (self.isImportant)
-		return @"imp";
-	else {
-		if (self.isNewEvent)
-			return @"new";
-		else
-			return @"old";
-	}
-}
-
-- (BOOL)importantLog {
-	return self.isImportant;
-}
-
-- (BOOL)newLog {
-	return self.isNewEvent;
 }
 
 - (NSString *)createUniqueIdentifier {

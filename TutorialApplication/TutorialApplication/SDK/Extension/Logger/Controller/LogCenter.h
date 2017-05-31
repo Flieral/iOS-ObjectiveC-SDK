@@ -26,19 +26,9 @@
 
 + (NSArray *)RemoveLogServiceWithIdentifier:(NSString *)identifier;
 
-+ (void)MarkAllLogsAsOld;
-
-+ (void)MarkLogServiceAsOldWithIdentifier:(NSString *)identifier;
-
-+ (void)MarkAllLogsAsImportant;
-
-+ (void)MarkLogServiceAsImportantWithIdentifier:(NSString *)identifier;
-
 + (void)MoveTemporaryLogsToLogCenter;
 
 + (NSArray *)SearchLogByTitle:(NSString *)title;
-
-+ (NSArray *)SearchLogByTag:(NSString *)tag;
 
 + (NSArray *)SearchLogByMinimumTimeStamp:(NSString *)minTime;
 

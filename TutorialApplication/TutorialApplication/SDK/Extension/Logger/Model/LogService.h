@@ -15,15 +15,9 @@
 - (void)initWithTitle:(NSString *)title eventDescription:(NSString *)eventDescription UserInfo:(NSObject *)userInfo;
 
 - (NSString *)title;
+
 - (NSString *)eventDescription;
+
 - (NSString *)timeInterval;
-
-- (NSString *)logTag;
-
-- (void)changeLogToImportant;
-- (void)changeLogToOld;
-
-- (BOOL)importantLog;
-- (BOOL)newLog;
 
 @end
