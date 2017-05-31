@@ -17,13 +17,15 @@
 		A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A11D8D214400BB7F80 /* FlieralAPIManager.m */; };
 		A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39A71D8D277000BB7F80 /* RestAPI.m */; };
 		A76E39AC1D8D3FCB00BB7F80 /* PlacementModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */; };
-		A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39AE1D8D413100BB7F80 /* PlacementController.m */; };
 		A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */; };
 		A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */; };
 		A76E39BA1D8D9AAE00BB7F80 /* NSQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */; };
 		A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39BE1D8DA7A500BB7F80 /* LogService.m */; };
 		A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C21D8DA8A800BB7F80 /* LogCenter.m */; };
 		A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A76E39C51D8E71A800BB7F80 /* APIManager.m */; };
+		A782E7F11EDAF78100D4FF92 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7F01EDAF78100D4FF92 /* UserManager.m */; };
+		A782E7F61EDEC8DD00D4FF92 /* CacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7F51EDEC8DD00D4FF92 /* CacheModel.m */; };
+		A782E7F91EDEC92A00D4FF92 /* CacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7F81EDEC92A00D4FF92 /* CacheManager.m */; };
 		A7F485261D92DBD60060A057 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F485251D92DBD60060A057 /* SystemConfiguration.framework */; };
 		A7F4852A1D92DC500060A057 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F485291D92DC500060A057 /* Reachability.m */; };
 		A7F485311D92E00D0060A057 /* GBPing.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F4852D1D92E00D0060A057 /* GBPing.m */; };
@@ -67,10 +69,8 @@
 		A76E39A71D8D277000BB7F80 /* RestAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestAPI.m; path = SDK/RestAPI/RestAPI.m; sourceTree = "<group>"; };
 		A76E39AA1D8D3FCB00BB7F80 /* PlacementModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementModel.h; path = SDK/Placement/PlacementModel.h; sourceTree = "<group>"; };
 		A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementModel.m; path = SDK/Placement/PlacementModel.m; sourceTree = "<group>"; };
-		A76E39AD1D8D413100BB7F80 /* PlacementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementController.h; path = SDK/Placement/PlacementController.h; sourceTree = "<group>"; };
-		A76E39AE1D8D413100BB7F80 /* PlacementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementController.m; path = SDK/Placement/PlacementController.m; sourceTree = "<group>"; };
 		A76E39B11D8D542900BB7F80 /* FlieralSDKEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralSDKEngine.h; path = SDK/Engine/FlieralSDKEngine.h; sourceTree = "<group>"; };
-		A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralSDKEngine.m; path = SDK/Engine/FlieralSDKEngine.m; sourceTree = "<group>"; };
+		A76E39B21D8D542900BB7F80 /* FlieralSDKEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = FlieralSDKEngine.m; path = SDK/Engine/FlieralSDKEngine.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A76E39B41D8D76AD00BB7F80 /* FlieralPlacementManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlieralPlacementManager.h; path = SDK/Engine/FlieralPlacementManager.h; sourceTree = "<group>"; };
 		A76E39B51D8D76AD00BB7F80 /* FlieralPlacementManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlieralPlacementManager.m; path = SDK/Engine/FlieralPlacementManager.m; sourceTree = "<group>"; };
 		A76E39B81D8D9AAE00BB7F80 /* NSQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSQueue.h; path = SDK/Extension/NSQueue.h; sourceTree = "<group>"; };
@@ -81,6 +81,13 @@
 		A76E39C21D8DA8A800BB7F80 /* LogCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogCenter.m; path = SDK/Extension/Logger/Controller/LogCenter.m; sourceTree = "<group>"; };
 		A76E39C41D8E71A800BB7F80 /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIManager.h; path = SDK/RestAPI/APIManager.h; sourceTree = "<group>"; };
 		A76E39C51D8E71A800BB7F80 /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIManager.m; path = SDK/RestAPI/APIManager.m; sourceTree = "<group>"; };
+		A782E7EF1EDAF78100D4FF92 /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserManager.h; path = SDK/Extension/User/UserManager.h; sourceTree = "<group>"; };
+		A782E7F01EDAF78100D4FF92 /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserManager.m; path = SDK/Extension/User/UserManager.m; sourceTree = "<group>"; };
+		A782E7F21EDD68C100D4FF92 /* PublicHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = PublicHeaders.h; path = SDK/Extension/PublicHeaders.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A782E7F41EDEC8DD00D4FF92 /* CacheModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CacheModel.h; path = SDK/Cache/CacheModel.h; sourceTree = "<group>"; };
+		A782E7F51EDEC8DD00D4FF92 /* CacheModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CacheModel.m; path = SDK/Cache/CacheModel.m; sourceTree = "<group>"; };
+		A782E7F71EDEC92A00D4FF92 /* CacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CacheManager.h; path = SDK/Cache/CacheManager.h; sourceTree = "<group>"; };
+		A782E7F81EDEC92A00D4FF92 /* CacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CacheManager.m; path = SDK/Cache/CacheManager.m; sourceTree = "<group>"; };
 		A7F485251D92DBD60060A057 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7F485281D92DC500060A057 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SDK/Extension/Reachability/Reachability.h; sourceTree = "<group>"; };
 		A7F485291D92DC500060A057 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SDK/Extension/Reachability/Reachability.m; sourceTree = "<group>"; };
@@ -226,6 +233,7 @@
 		A730190B1D8C41CA006C8B64 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				A782E7F31EDEC8B300D4FF92 /* Cache */,
 				A76E39B71D8D7DAC00BB7F80 /* Extension */,
 				A76E39B01D8D531F00BB7F80 /* Engine */,
 				A76E39A91D8D3E3900BB7F80 /* Placement */,
@@ -252,8 +260,6 @@
 			children = (
 				A76E39AA1D8D3FCB00BB7F80 /* PlacementModel.h */,
 				A76E39AB1D8D3FCB00BB7F80 /* PlacementModel.m */,
-				A76E39AD1D8D413100BB7F80 /* PlacementController.h */,
-				A76E39AE1D8D413100BB7F80 /* PlacementController.m */,
 			);
 			name = Placement;
 			sourceTree = "<group>";
@@ -272,11 +278,13 @@
 		A76E39B71D8D7DAC00BB7F80 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A782E7EE1EDAF75100D4FF92 /* User */,
 				A7F4852B1D92DFF40060A057 /* Monitoring */,
 				A7F485271D92DBE10060A057 /* Reachability */,
 				A76E39BB1D8DA73300BB7F80 /* Logger */,
 				A76E39B81D8D9AAE00BB7F80 /* NSQueue.h */,
 				A76E39B91D8D9AAE00BB7F80 /* NSQueue.m */,
+				A782E7F21EDD68C100D4FF92 /* PublicHeaders.h */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -306,6 +314,26 @@
 				A76E39C21D8DA8A800BB7F80 /* LogCenter.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		A782E7EE1EDAF75100D4FF92 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				A782E7EF1EDAF78100D4FF92 /* UserManager.h */,
+				A782E7F01EDAF78100D4FF92 /* UserManager.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		A782E7F31EDEC8B300D4FF92 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				A782E7F41EDEC8DD00D4FF92 /* CacheModel.h */,
+				A782E7F51EDEC8DD00D4FF92 /* CacheModel.m */,
+				A782E7F71EDEC92A00D4FF92 /* CacheManager.h */,
+				A782E7F81EDEC92A00D4FF92 /* CacheManager.m */,
+			);
+			name = Cache;
 			sourceTree = "<group>";
 		};
 		A7F485271D92DBE10060A057 /* Reachability */ = {
@@ -464,7 +492,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		886905BEA235971788FA84B0 /* [CP] Check Pods Manifest.lock */ = {
@@ -479,7 +507,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B629ACCA175FC0B3756FB25E /* [CP] Copy Pods Resources */ = {
@@ -541,13 +569,15 @@
 				A7F4852A1D92DC500060A057 /* Reachability.m in Sources */,
 				A76E39A81D8D277000BB7F80 /* RestAPI.m in Sources */,
 				A76E39B31D8D542900BB7F80 /* FlieralSDKEngine.m in Sources */,
-				A76E39AF1D8D413100BB7F80 /* PlacementController.m in Sources */,
 				A76E39A21D8D214400BB7F80 /* FlieralAPIManager.m in Sources */,
 				A7F485311D92E00D0060A057 /* GBPing.m in Sources */,
+				A782E7F11EDAF78100D4FF92 /* UserManager.m in Sources */,
 				A76E39C31D8DA8A800BB7F80 /* LogCenter.m in Sources */,
 				A76E39C61D8E71A800BB7F80 /* APIManager.m in Sources */,
+				A782E7F61EDEC8DD00D4FF92 /* CacheModel.m in Sources */,
 				A76E39B61D8D76AD00BB7F80 /* FlieralPlacementManager.m in Sources */,
 				A7F485321D92E00D0060A057 /* GBPingSummary.m in Sources */,
+				A782E7F91EDEC92A00D4FF92 /* CacheManager.m in Sources */,
 				A76E39BF1D8DA7A500BB7F80 /* LogService.m in Sources */,
 				A7F485351D92E07B0060A057 /* MonitorManager.m in Sources */,
 				A730190E1D8C4249006C8B64 /* ViewController.m in Sources */,
