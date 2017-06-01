@@ -26,9 +26,16 @@
 
 - (nullable NSDictionary *)getUserSetting;
 
++ (nullable NSDictionary *)getUserPublicSetting;
+
 - (void)setUserHashID:(nonnull NSString *)hashID;
+
 - (nullable NSString *)getUserHashID;
 
-- (Boolean)checkUserHashID;
+- (BOOL)checkUserHashID;
+
+- (void)setAuthenticationAndPlacementManagerEnable;
+
+- (BOOL)checkForAuthenticationAndPlacementManager;
 
 @end

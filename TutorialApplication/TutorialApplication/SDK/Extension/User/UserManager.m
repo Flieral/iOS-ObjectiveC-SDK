@@ -37,15 +37,16 @@
         
         _settingDict = [NSDictionary dictionary];
         
-        [_settingDict setValue:[self getLanguageCode] forKey:@"language"];
-        [_settingDict setValue:[self getDevice] forKey:@"device"];
-        [_settingDict setValue:[self getOS] forKey:@"os"];
-        [_settingDict setValue:[self getConnection] forKey:@"connection"];
+        [_settingDict setValue:[self getLanguageCode]   forKey:@"language"];
+        [_settingDict setValue:[self getDevice]         forKey:@"device"];
+        [_settingDict setValue:[self getOS]             forKey:@"os"];
+        [_settingDict setValue:[self getConnection]     forKey:@"connection"];
+        [_settingDict setValue:[self getUserLabel]      forKey:@"userLabel"];
         
-        [_settingDict setValue:@"US" forKey:@"country"];
-        [_settingDict setValue:@"New York" forKey:@"city"];
-        [_settingDict setValue:@"WestHost" forKey:@"ISP"];
-        [_settingDict setValue:@"0.0.0.0" forKey:@"ip"];
+        [_settingDict setValue:@"US"        forKey:@"country"];
+        [_settingDict setValue:@"New York"  forKey:@"city"];
+        [_settingDict setValue:@"WestHost"  forKey:@"ISP"];
+        [_settingDict setValue:@"0.0.0.0"   forKey:@"ip"];
         
         [self saveData];
     }
@@ -70,10 +71,10 @@
         NSError *errorJson;
         NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&errorJson];
         
-        [_settingDict setValue:[responseDict valueForKey:@"countryCode"] forKey:@"country"];
-        [_settingDict setValue:[responseDict valueForKey:@"regionName"] forKey:@"city"];
-        [_settingDict setValue:[responseDict valueForKey:@"isp"] forKey:@"ISP"];
-        [_settingDict setValue:[responseDict valueForKey:@"query"] forKey:@"ip"];
+        [_settingDict setValue:[responseDict valueForKey:@"countryCode"]    forKey:@"country"];
+        [_settingDict setValue:[responseDict valueForKey:@"regionName"]     forKey:@"city"];
+        [_settingDict setValue:[responseDict valueForKey:@"isp"]            forKey:@"ISP"];
+        [_settingDict setValue:[responseDict valueForKey:@"query"]          forKey:@"ip"];
         
         [self saveData];
         
@@ -113,6 +114,11 @@
     return @"iOS";
 }
 
+- (NSString *)getUserLabel
+{
+    return @"Average";
+}
+
 - (NSString *)getConnection
 {
     NetworkStatus status = [internetReachabilityChecker currentReachabilityStatus];
@@ -140,11 +146,24 @@
     return [ud valueForKey:FLUSERHASHID];
 }
 
-- (Boolean)checkUserHashID
+- (BOOL)checkUserHashID
 {
     if ([self getUserHashID] == (id)[NSNull null])
         return false;
     return true;
+}
+
+- (void)setAuthenticationAndPlacementManagerEnable
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setBool:TRUE forKey:FLAUTHANDPLACEMENTMANAGER];
+    [ud synchronize];
+}
+
+- (BOOL)checkForAuthenticationAndPlacementManager
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    return [ud boolForKey:FLAUTHANDPLACEMENTMANAGER];
 }
 
 #pragma mark - User Setting
@@ -154,6 +173,24 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     return [ud objectForKey:UserKEY];
 }
+
++ (nullable NSDictionary *)getUserPublicSetting
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = [NSDictionary dictionary];
+    NSDictionary *settingDict = [ud objectForKey:UserKEY];
+    
+    [dict setValue:[settingDict valueForKey:@"language"]       forKey:@"language"];
+    [dict setValue:[settingDict valueForKey:@"device"]         forKey:@"device"];
+    [dict setValue:[settingDict valueForKey:@"os"]             forKey:@"os"];
+    [dict setValue:[settingDict valueForKey:@"connection"]     forKey:@"connection"];
+    [dict setValue:[settingDict valueForKey:@"userLabel"]      forKey:@"userLabel"];
+    [dict setValue:[settingDict valueForKey:@"country"]        forKey:@"country"];
+    [dict setValue:[ud valueForKey:FLUSERHASHID]               forKey:@"userId"];
+    
+    return  dict;
+}
+
 
 #pragma mark - Helpers
 
