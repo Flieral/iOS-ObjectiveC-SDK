@@ -14,10 +14,11 @@
 
 @interface NSQueue()
 
-@property (nonatomic, strong) NSMutableArray *data;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic) NSInteger capacity;
-@property (nonatomic) BOOL useCachePolicy;
+@property (nonatomic, strong) NSMutableArray  * data;
+@property (nonatomic, strong) NSString        * identifier;
+
+@property (nonatomic) NSInteger     capacity;
+@property (nonatomic) BOOL          useCachePolicy;
 
 @end
 
@@ -40,9 +41,9 @@
 	if (self = [super init])
 	{
 		_useCachePolicy = false;
-		_identifier = identifier;
-		_capacity = capacity;
-		_data = [NSMutableArray arrayWithCapacity:capacity];
+		_identifier     = identifier;
+		_capacity       = capacity;
+		_data           = [NSMutableArray arrayWithCapacity:capacity];
 	}
 	return self;
 }
@@ -60,26 +61,26 @@
 	NSString *key2 = [NSString stringWithFormat:@"%@:%@", QUEUECAPACITYKEY, _identifier];
 	NSString *key3 = [NSString stringWithFormat:@"%@:%@", QUEUECACHEPOLICYKEY, _identifier];
 	
-    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_data];
+    NSData *encodedObject   = [NSKeyedArchiver  archivedDataWithRootObject:_data];
+	NSUserDefaults *ud      = [NSUserDefaults   standardUserDefaults];
     
-	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-	[ud setObject:encodedObject forKey:key1];
+	[ud setObject:encodedObject     forKey:key1];
+	[ud setInteger:_capacity        forKey:key2];
+	[ud setBool:_useCachePolicy     forKey:key3];
     
-	[ud setInteger:_capacity forKey:key2];
-	[ud setBool:_useCachePolicy forKey:key3];
 	[ud synchronize];
 }
 
 - (void)loadQueueContentForPlacementIdentifier:(nonnull NSString *)identifier
 {
-	NSString *key1 = [NSString stringWithFormat:@"%@:%@", QUEUECONTENTKEY, _identifier];
-	NSString *key2 = [NSString stringWithFormat:@"%@:%@", QUEUECAPACITYKEY, _identifier];
-	NSString *key3 = [NSString stringWithFormat:@"%@:%@", QUEUECACHEPOLICYKEY, _identifier];
+	NSString *key1 = [NSString stringWithFormat:@"%@:%@", QUEUECONTENTKEY,      _identifier];
+	NSString *key2 = [NSString stringWithFormat:@"%@:%@", QUEUECAPACITYKEY,     _identifier];
+	NSString *key3 = [NSString stringWithFormat:@"%@:%@", QUEUECACHEPOLICYKEY,  _identifier];
 	
-	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-	_identifier = identifier;
-    _capacity = [ud integerForKey:key2];
-    _useCachePolicy = [ud boolForKey:key3];
+	NSUserDefaults *ud  = [NSUserDefaults standardUserDefaults];
+	_identifier         = identifier;
+    _capacity           = [ud integerForKey:key2];
+    _useCachePolicy     = [ud boolForKey:key3];
     
     NSData *encodedObject = [ud objectForKey:key1];
     _data = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
@@ -130,6 +131,20 @@
     if (_useCachePolicy)
         [self saveQueueContent];
 
+}
+
+#pragma mark - Queue Statuses
+
+- (int)currentEmptySpaces
+{
+    return (int) _capacity - (int) _data.count;
+}
+
+- (BOOL)checkForEmptySpace
+{
+    if (_capacity - _data.count > 0)
+        return true;
+    return false;
 }
 
 @end
