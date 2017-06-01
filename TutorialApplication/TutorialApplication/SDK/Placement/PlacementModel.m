@@ -56,4 +56,24 @@
     return self;
 }
 
+#pragma mark - Dictionary Format of Data
+
+- (nullable NSDictionary *)getAnnouncerModel
+{
+    NSDictionary *dict = [NSDictionary dictionary];
+    [dict setValue:_subcampaignHashID   forKey:@"subcampaignHashId"];
+    [dict setValue:_campaignHashID      forKey:@"campaignHashId"];
+    [dict setValue:_announcerHashID     forKey:@"announcerHashId"];
+    return dict;
+}
+
+- (nullable NSDictionary *)getPublisherModel
+{
+    NSDictionary *dict = [NSDictionary dictionary];
+    [dict setValue:_placementHashID     forKey:@"placementHashId"];
+    [dict setValue:_applicationHashID   forKey:@"applicationHashId"];
+    [dict setValue:_publisherHashID     forKey:@"publisherHashId"];
+    return dict;
+}
+
 @end

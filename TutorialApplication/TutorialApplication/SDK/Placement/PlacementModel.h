@@ -20,8 +20,11 @@
 @property (nonatomic, strong) NSString  * _Nonnull campaignHashID;
 @property (nonatomic, strong) NSString  * _Nonnull announcerHashID;
 
-@property (nonatomic, strong) NSURL  * _Nonnull contentURL;
+@property (nonatomic, strong) NSURL     * _Nonnull contentURL;
 
 - (nullable id)initWithModel:(nonnull NSDictionary *)modelInstance;
+
+- (nullable NSDictionary *)getAnnouncerModel;
+- (nullable NSDictionary *)getPublisherModel;
 
 @end
