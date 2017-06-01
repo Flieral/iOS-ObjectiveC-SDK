@@ -23,8 +23,8 @@
 
 + (nullable CacheManager *)sharedManager
 {
-    static CacheManager* sharedService = nil;
-    static dispatch_once_t onceToken;
+    static CacheManager*    sharedService = nil;
+    static dispatch_once_t  onceToken;
     
     dispatch_once(&onceToken, ^{
         sharedService = [self new];
@@ -120,19 +120,23 @@
 
 - (void)storeCaches
 {
-    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_cacheArray];
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:encodedObject forKey:FLSTORAGESDKCACHEKEY];
+    NSData *encodedObject   = [NSKeyedArchiver archivedDataWithRootObject:_cacheArray];
+    NSUserDefaults *ud      = [NSUserDefaults standardUserDefaults];
+    
+    [ud setObject:encodedObject     forKey:FLSTORAGESDKCACHEKEY];
     [ud synchronize];
+    
     [_cacheArray removeAllObjects];
 }
 
 - (void)loadCaches
 {
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSData *encodedObject = [ud objectForKey:FLSTORAGESDKCACHEKEY];
-    _cacheArray = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    NSUserDefaults *ud      = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject   = [ud objectForKey:FLSTORAGESDKCACHEKEY];
+
     [_cacheArray removeAllObjects];
+    
+    _cacheArray = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
 }
 
 @end

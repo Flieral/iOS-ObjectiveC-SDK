@@ -24,7 +24,7 @@
 }
 
 @property (nullable, nonatomic, strong) GBPing *ping;
-@property (nonnull, nonatomic, strong) __block NSDictionary *pingDict;
+@property (nullable, nonatomic, strong) __block NSDictionary *pingDict;
 
 @property (nonatomic) BOOL pingReady;
 
@@ -39,11 +39,11 @@
     {
         _pingDict = [NSDictionary dictionary];
         
-        _ping = [[GBPing alloc] init];
-        _ping.host = @"8.8.8.8";
-        _ping.delegate = self;
-        _ping.timeout = 1.0;
-        _ping.pingPeriod = 0.5;
+        _ping               = [[GBPing alloc] init];
+        _ping.host          = @"8.8.8.8";
+        _ping.delegate      = self;
+        _ping.timeout       = 1.0;
+        _ping.pingPeriod    = 0.5;
         
         [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)0] forKey:PACKETLOSTKEY];
         [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)0] forKey:PACKETRTTKEY];
@@ -84,8 +84,8 @@
 				  NSInteger packetLost = ((float)(numberOfPacketLosts / totalNumberOfPackets) * 100);
 				  NSInteger packetRTT  = averageRTT * 1000;
 				  
-				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetLost] forKey:PACKETLOSTKEY];
-				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetRTT] forKey:PACKETRTTKEY];
+				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetLost]  forKey:PACKETLOSTKEY];
+				  [_pingDict setValue:[NSString stringWithFormat:@"%li", (long)packetRTT]   forKey:PACKETRTTKEY];
 				  
                   [self saveData];
                   

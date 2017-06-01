@@ -21,6 +21,7 @@
 #define FLSTORAGEHIDDENKEY              @"Flieral:Placement:IsHidden:"
 
 #define FLDEFAULTTIMER                  60
+#define FLCONTENTTIMER                  604800
 
 #define FLPRELOADVIEW                   @"Flieral:View:Preload"
 #define FLDIDLOADVIEW                   @"Flieral:View:Didload"
@@ -31,5 +32,9 @@
 #define FLDIDDISAPPEARVIEW              @"Flieral:View:DidDisappear"
 
 #define FLPLACEMENTMANAGERSTORAGE       @"Flieral:PlacementManager"
+
+#define FLAUTHANDPLACEMENTMANAGER       @"Flieral:Auth:Placement:"
+
+#define FLCONTENTTIMERKEY               @"Flieral:Content:SaveTime:"
 
 #endif
