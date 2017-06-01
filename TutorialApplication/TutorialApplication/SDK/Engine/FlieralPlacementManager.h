@@ -11,38 +11,38 @@
 
 typedef NS_ENUM(NSInteger, StatusType)
 {
-    Enable = 1,
-    Disable = 2
+    Enable      = 1,
+    Disable     = 2
     
 } placementStatus;
 
 typedef NS_ENUM(NSInteger, PriorityType)
 {
-    LowPriority = 1,
+    LowPriority     = 1,
     AveragePriority = 2,
-    HighPriority = 3
+    HighPriority    = 3
     
 } priorityState;
 
 typedef NS_ENUM(NSInteger, StyleType)
 {
-    SmallBanner = 1,
-    MediumBanner = 2,
-    LargeBanner = 3,
-    MediumInterstitial = 4,
-    LargeInterstitial = 5
+    SmallBanner         = 1,
+    MediumBanner        = 2,
+    LargeBanner         = 3,
+    MediumInterstitial  = 4,
+    LargeInterstitial   = 5
     
 } style;
 
 typedef NS_ENUM(NSInteger, Event)
 {
-    PreLoad = 1,
-    DidLoad = 2,
-    FailedLoad = 3,
-    WillAppear = 4,
-    DidAppear = 5,
-    WillDisappear = 6,
-    DidDisappear = 7
+    PreLoad         = 1,
+    DidLoad         = 2,
+    FailedLoad      = 3,
+    WillAppear      = 4,
+    DidAppear       = 5,
+    WillDisappear   = 6,
+    DidDisappear    = 7
     
 } eventListener;
 
@@ -50,9 +50,8 @@ typedef NS_ENUM(NSInteger, Event)
 
 @interface FlieralPlacementManager : NSObject
 
-@property (nonatomic, strong) NSString * _Nonnull placementHashID;
-
-@property (nonatomic, strong) NSDictionary * _Nonnull instanceObject;
+@property (nonatomic, strong, nonnull) NSString     * placementHashID;
+@property (nonatomic, strong, nonnull) NSDictionary * instanceObject;
 
 - (nullable id)initWithPlacementHashId:(nonnull NSString *)placementHashId;
 
@@ -71,8 +70,6 @@ typedef NS_ENUM(NSInteger, Event)
 - (void)SetDidAppearBlock:(nullable void (^)(NSDictionary       * _Nonnull details)) didAppearBlock;
 - (void)SetWillDisappearBlock:(nullable void (^)(NSDictionary   * _Nonnull details)) willDisappearBlock;
 - (void)SetDidDisappearBlock:(nullable void (^)(NSDictionary    * _Nonnull details)) didDisappearBlock;
-
-- (void)saveCache:(nonnull NSObject *)data;
 
 - (void)Hide;
 - (void)Show;
