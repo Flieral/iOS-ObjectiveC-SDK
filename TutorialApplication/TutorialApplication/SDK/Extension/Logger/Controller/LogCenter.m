@@ -33,7 +33,7 @@
 	[userDefault setBool:enable forKey:ENABLESYSTEM];
 	[userDefault synchronize];
 	
-	[LogCenter SetLoggerVersion:@"1.0.0"];
+	[LogCenter SetLoggerVersion:@"1.1.0"];
 	
 	NSString *loggerStart = [NSString stringWithFormat:@"[LogCenter] START WORKING WITH VERSION %@",[LogCenter LogegrVersion]];
 	NSLog(loggerStart);
@@ -393,7 +393,7 @@
 + (void)PrintDeveloperLog:(NSString *)log {
 	
 	if ([LogCenter EnableDeveloperLogs])
-		NSLog(@"[LogCenter] %@",log);
+		NSLog(@"[LogCenter][%f]%@", [[NSDate date] timeIntervalSince1970], log);
 }
 
 #pragma mark - Version

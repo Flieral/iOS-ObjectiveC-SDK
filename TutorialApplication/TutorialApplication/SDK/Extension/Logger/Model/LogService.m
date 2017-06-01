@@ -20,11 +20,11 @@
 
 @interface LogService ()
 
-@property (nonatomic,strong) NSString *title;
-@property (nonatomic,strong) NSString *eventDescription;
-@property (nonatomic,strong) NSString *timeInterval;
+@property (nonatomic,strong) NSString * title;
+@property (nonatomic,strong) NSString * eventDescription;
+@property (nonatomic,strong) NSString * timeInterval;
 
-@property (nonatomic,strong) NSObject *userInfo;
+@property (nonatomic,strong) NSObject * userInfo;
 
 @end
 
@@ -32,11 +32,11 @@
 
 - (void)initWithTitle:(NSString *)title eventDescription:(NSString *)eventDescription UserInfo:(NSObject *)userInfo
 {
-	self.logServiceID = [self createUniqueIdentifier];
-	self.title = title;
-	self.eventDescription = eventDescription;
-	self.timeInterval = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-	self.userInfo = userInfo;
+	self.logServiceID       = [self createUniqueIdentifier];
+	self.title              = title;
+	self.eventDescription   = eventDescription;
+	self.timeInterval       = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+	self.userInfo           = userInfo;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
