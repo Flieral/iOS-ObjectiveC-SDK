@@ -77,6 +77,8 @@
             self = [self loadPlacementManager:placementHashId];
             [self loadQueuesForPlacementManager:placementHashId];
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
 	}
 	return self;
 }
@@ -418,6 +420,8 @@
             _currentPlacementModel  = model;
             _currentPlacementView   = webView;
 
+            [self setConstraint];
+            
             [webView        setHidden:false];
             [_parentView    addSubview:webView];
             
@@ -432,6 +436,8 @@
     {
         _currentPlacementModel  = model;
         _currentPlacementView   = webView;
+        
+        [self setConstraint];
         
         [_parentView addSubview:webView];
         [self fetchNextContents];
@@ -527,7 +533,7 @@
     CGPoint edge    = _parentView.frame.origin;
     double width    = _parentView.frame.size.width;
     double height   = _parentView.frame.size.height;
-    
+
     switch (_placementStyle)
     {
         case SmallBanner:
@@ -549,6 +555,27 @@
             break;
     }
     return CGRectMake(0, 0, 0, 0);
+}
+
+- (void)setConstraint
+{
+    [_currentPlacementView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    NSLayoutConstraint *left    = [NSLayoutConstraint constraintWithItem:_currentPlacementView attribute:NSLayoutAttributeLeft      relatedBy:NSLayoutRelationEqual toItem:_parentView attribute:NSLayoutAttributeLeft      multiplier:1 constant:(_currentPlacementView.frame.origin.x)];
+    NSLayoutConstraint *top     = [NSLayoutConstraint constraintWithItem:_currentPlacementView attribute:NSLayoutAttributeTop       relatedBy:NSLayoutRelationEqual toItem:_parentView attribute:NSLayoutAttributeTop       multiplier:1 constant:(_currentPlacementView.frame.origin.y)];
+    NSLayoutConstraint *right   = [NSLayoutConstraint constraintWithItem:_currentPlacementView attribute:NSLayoutAttributeRight     relatedBy:NSLayoutRelationEqual toItem:_parentView attribute:NSLayoutAttributeRight     multiplier:1 constant:(_currentPlacementView.frame.origin.x)];
+    NSLayoutConstraint *bottom  = [NSLayoutConstraint constraintWithItem:_currentPlacementView attribute:NSLayoutAttributeBottom    relatedBy:NSLayoutRelationEqual toItem:_parentView attribute:NSLayoutAttributeBottom    multiplier:1 constant:(_currentPlacementView.frame.origin.y)];
+    
+    [_parentView addConstraints:@[left, right, top, bottom]];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    if (_currentPlacementView)
+    {
+        [_currentPlacementView setFrame:[self frameForType]];
+        [self setConstraint];
+    }
 }
 
 #pragma mark - Fetch Next Operations
