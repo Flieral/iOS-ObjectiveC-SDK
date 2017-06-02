@@ -26,4 +26,9 @@
 }
 
 
+- (IBAction)firstButtonClicked:(id)sender {
+}
+
+- (IBAction)secondButtonClicked:(id)sender {
+}
 @end

@@ -10,6 +10,13 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextView *firstPlacementTextView;
+
+@property (weak, nonatomic) IBOutlet UITextView *secondPlacementTextView;
+
+- (IBAction)firstButtonClicked:(id)sender;
+
+- (IBAction)secondButtonClicked:(id)sender;
 
 @end
 
