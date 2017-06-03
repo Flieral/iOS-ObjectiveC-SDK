@@ -18,7 +18,7 @@
 #import "LogCenter.h"
 #import "NSQueue.h"
 
-@interface FlieralPlacementManager () <NSCoding>
+@interface FlieralPlacementManager () <NSCoding, UIWebViewDelegate>
 {
 	Reachability *internetReachabilityChecker;
 }
@@ -413,6 +413,8 @@
     NSString *timerKey      = [FLSTORAGETIMERKEY stringByAppendingString:model.placementHashID];
     NSString *hiddenKey     = [FLSTORAGEHIDDENKEY stringByAppendingString:model.placementHashID];
     
+    [_currentPlacementView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"setInfo(%@, %@);", [UserManager getUserHashID], _currentPlacementModel.subcampaignHashID]];
+    
     if ([ud boolForKey:hiddenKey])
     {
         if ([ud integerForKey:timerKey] > [[NSDate date] timeIntervalSince1970])
@@ -445,6 +447,8 @@
         if ([_SDKEngine LogEnable])
             [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Added To Superview Successfuly", _placementHashID] UserInfo:nil];
     }
+    
+    [_currentPlacementView setDelegate:self];
     
     [self EventListener:DidAppear Details:nil];
 }
@@ -653,6 +657,25 @@
         // rem
     }
     return self;
+}
+
+#pragma mark - UI Web View Delegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString *myAppScheme = @"FlieralSDK";
+    NSString *myActionType = @"saveCache";
+    
+    if (![request.URL.scheme isEqualToString:myAppScheme])
+        return YES;
+    
+    NSString *actionType = request.URL.host;
+    NSString *jsonDictString = [request.URL.fragment stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    
+    if ([actionType isEqualToString:myActionType])
+        [self saveCache:jsonDictString];
+    
+    return NO;
 }
 
 @end
