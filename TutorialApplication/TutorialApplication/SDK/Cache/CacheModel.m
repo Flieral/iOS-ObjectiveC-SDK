@@ -17,7 +17,8 @@
     {
         _verb       = [model valueForKey:@"method"];
         _requestUrl = [model valueForKey:@"url"];
-        _payload    = [model valueForKey:@"body"];
+        if ([model valueForKey:@"body"])
+            _payload    = [model valueForKey:@"body"];
     }
     return self;
 }
