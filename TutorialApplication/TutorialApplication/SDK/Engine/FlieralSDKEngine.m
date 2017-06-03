@@ -50,7 +50,7 @@
 
 #pragma mark - Shared Instance Singelton
 
-+ (nullable FlieralSDKEngine *)SDKEngine:(nullable NSDictionary *)setting
++ (nullable FlieralSDKEngine *)SDKEngine
 {
 	static FlieralSDKEngine* sharedService = nil;
 	static dispatch_once_t onceToken;
@@ -86,32 +86,36 @@
         #endif
 
         sharedService.logEnable = false;
-        if ([[setting valueForKey:@"logEnable"] isEqualToString:@"true"])
-        {
-            [LogCenter SetEnableLogServiceManager:YES];
-            [LogCenter SetEnableDeveloperLogs:YES];
-            sharedService.logEnable = true;
-            
-            switch ([[setting valueForKey:@"verboseLevel"] intValue]) {
-                case _V:
-                    sharedService.verboseLevel = _V;
-                    break;
-                case _VV:
-                    sharedService.verboseLevel = _VV;
-                    break;
-                case _VVV:
-                    sharedService.verboseLevel = _VVV;
-                    break;
-                default:
-                    sharedService.verboseLevel = _V;
-                    break;
-            }
-        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startMonitorAndSetting) name:UIApplicationWillEnterForegroundNotification object:nil];
 	});
 	
 	return sharedService;
+}
+
+- (void)AddSetting:(nullable NSDictionary *)setting
+{
+    if ([[setting valueForKey:@"logEnable"] isEqualToString:@"true"])
+    {
+        [LogCenter SetEnableLogServiceManager:YES];
+        [LogCenter SetEnableDeveloperLogs:YES];
+        _logEnable = true;
+        
+        switch ([[setting valueForKey:@"verboseLevel"] intValue]) {
+            case _V:
+                _verboseLevel = _V;
+                break;
+            case _VV:
+                _verboseLevel = _VV;
+                break;
+            case _VVV:
+                _verboseLevel = _VVV;
+                break;
+            default:
+                _verboseLevel = _V;
+                break;
+        }
+    }
 }
 
 - (BOOL)LogEnable

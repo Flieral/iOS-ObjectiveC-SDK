@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FlieralPlacementManager.h"
 
 typedef NS_ENUM(NSInteger, VerboseType)
 {
@@ -17,11 +18,11 @@ typedef NS_ENUM(NSInteger, VerboseType)
     
 } verboseType;
 
-@class FlieralPlacementManager;
-
 @interface FlieralSDKEngine : NSObject
 
-+ (nullable FlieralSDKEngine *)SDKEngine:(nullable NSDictionary *)setting;
++ (nullable FlieralSDKEngine *)SDKEngine;
+
+- (void)AddSetting:(nullable NSDictionary *)setting;
 
 - (void)Authenticate:(nonnull NSString *)publisherHashID ApplicationHashID:(nonnull NSString *)applicationHashID;
 

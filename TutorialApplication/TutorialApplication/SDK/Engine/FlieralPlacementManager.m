@@ -64,7 +64,7 @@
         _placementHashID = placementHashId;
         _placementStatus = Disable;
         
-        _SDKEngine = [FlieralSDKEngine SDKEngine:nil];
+        _SDKEngine = [FlieralSDKEngine SDKEngine];
         
         if ([_SDKEngine LogEnable])
             [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Creating New Placement Manager Pointer Successfuly", placementHashId] UserInfo:nil];
@@ -603,7 +603,7 @@
 
     if ([internetReachabilityChecker isReachable])
         if ([_onlineQueue checkForEmptySpace] || [_offlineQueue checkForEmptySpace])
-            [[FlieralSDKEngine SDKEngine:nil] SendContentRequest:@[_placementHashID] AfterSeconds:0];
+            [[FlieralSDKEngine SDKEngine] SendContentRequest:@[_placementHashID] AfterSeconds:0];
 }
 
 #pragma mark - Storage and Coding Delegates
