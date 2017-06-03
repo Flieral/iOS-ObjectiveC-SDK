@@ -146,6 +146,12 @@
     return [ud valueForKey:FLUSERHASHID];
 }
 
++ (nullable NSString *)getUserHashID
+{
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    return [ud valueForKey:FLUSERHASHID];
+}
+
 - (BOOL)checkUserHashID
 {
     if ([self getUserHashID] == (id)[NSNull null])

@@ -32,6 +32,8 @@
 
 - (nullable NSString *)getUserHashID;
 
++ (nullable NSString *)getUserHashID;
+
 - (BOOL)checkUserHashID;
 
 - (void)setAuthenticationAndPlacementManagerEnable;
