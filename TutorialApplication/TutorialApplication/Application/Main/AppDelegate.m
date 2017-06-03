@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "FlieralSDKEngine.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +17,19 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// Override point for customization after application launch.
+	
+    NSDictionary *dict = [NSDictionary dictionary];
+    [dict setValue:@"logEnable" forKey:@"true"];
+    
+    [[FlieralSDKEngine SDKEngine] AddSetting:dict];
+    [[FlieralSDKEngine SDKEngine] Authenticate:@"" ApplicationHashID:@""];
+    
+    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
+
+    [[FlieralSDKEngine SDKEngine] StartEngine];
+    
 	return YES;
 }
 
