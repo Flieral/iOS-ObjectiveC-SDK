@@ -550,6 +550,18 @@
             return CGRectMake(0, height - (0.25 * height), width, (0.25 * height));
             break;
         case MediumInterstitial:
+            if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+                _parentView.backgroundColor = [UIColor clearColor];
+                
+                UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+                blurEffectView.frame = _parentView.bounds;
+                blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                
+                [_parentView addSubview:blurEffectView];
+            } else {
+                _parentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+            }
             return CGRectMake((width - (0.5 * width)) / 2, (height - (0.7 * height)) / 2, (0.5 * width), (0.7 * height));
             break;
         case LargeInterstitial:
