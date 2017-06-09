@@ -34,7 +34,7 @@
 	static FlieralAPIManager *_sharedManager = nil;
 	
 	dispatch_once(&pred, ^{
-		_sharedManager = [[self alloc] initWithBaseURL:[NSURL URLWithString:@""]];
+		_sharedManager = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://0.0.0.0:3015/api"]];
 	});
 	
 	return _sharedManager;
