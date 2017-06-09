@@ -112,7 +112,7 @@
                           SuccessBlock:(nullable void (^)(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath)) successBlock
                            failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock
 {
-    NSString *url = [NSString stringWithFormat:@"/containers/%@/download/%@", [information valueForKey:@""], [information valueForKey:@""]];
+    NSString *url = [NSString stringWithFormat:@"/containers/%@/download/%@", [information valueForKey:@"campaignHashId"], [information valueForKey:@"subcampaignHashId"]];
     [[RestAPI sharedService] downloadMethodWithQueryString:url Path:path SuccessBlock:^(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath) {
         
         successBlock(response, filePath);
