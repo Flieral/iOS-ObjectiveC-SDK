@@ -191,7 +191,10 @@
             }
             
         } failedBlock:^(NSError * _Nonnull error) {
-            
+
+            if ([_SDKEngine LogEnable])
+                [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Downloading Content To Offline Queue Failed Successfuly", _placementHashID] UserInfo:nil];
+
         }];
     }
     else
