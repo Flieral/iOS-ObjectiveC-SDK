@@ -9,6 +9,18 @@
 #import "AppDelegate.h"
 #import "FlieralSDKEngine.h"
 
+#define PUBLISHERID             @"59398e836f16aeabd64fcf84"
+#define APPLICATIONID           @"59398f1f6f16aeabd64fcf85"
+
+#define FIRST_PLACEMENT         @"593a381a6f16aeabd64fcf86"
+#define SECOND_PLACEMENT        @"593a385d6f16aeabd64fcf87"
+#define THIRD_PLACEMENT         @"593a388b6f16aeabd64fcf88"
+#define FOURTH_PLACEMENT        @"593a38b56f16aeabd64fcf89"
+#define FIFTH_PLACEMENT         @"593a38f76f16aeabd64fcf8a"
+#define SIXTH_PLACEMENT         @"593a8364efc302b6b73807e4"
+#define SEVENTH_PLACEMENT       @"593a8392efc302b6b73807e5"
+
+
 @interface AppDelegate ()
 
 @end
@@ -22,11 +34,15 @@
     [dict setValue:@"logEnable" forKey:@"true"];
     
     [[FlieralSDKEngine SDKEngine] AddSetting:dict];
-    [[FlieralSDKEngine SDKEngine] Authenticate:@"" ApplicationHashID:@""];
+    [[FlieralSDKEngine SDKEngine] Authenticate:PUBLISHERID ApplicationHashID:APPLICATIONID];
     
-    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
-    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
-    [[FlieralSDKEngine SDKEngine] AddPlacement:@""];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:FIRST_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:SECOND_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:THIRD_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:FOURTH_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:FIFTH_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:SIXTH_PLACEMENT];
+    [[FlieralSDKEngine SDKEngine] AddPlacement:SEVENTH_PLACEMENT];
 
     [[FlieralSDKEngine SDKEngine] StartEngine];
     
