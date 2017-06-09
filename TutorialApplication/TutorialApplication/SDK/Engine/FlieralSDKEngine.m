@@ -209,7 +209,8 @@
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
                 if (httpResponse.statusCode == 200)
                 {
-                    NSString *userhashId = [NSString stringWithString:[responseObject valueForKey:@"response"]];
+                    NSDictionary *data = (NSDictionary *)responseObject;
+                    NSString *userhashId = [NSString stringWithString:[data valueForKey:@"response"]];
 
                     if (_logEnable)
                         [LogCenter NewLogTitle:@"SDK Engine" LogDescription:[NSString stringWithFormat:@"Getting User Unique Hash Identifier (%@) From Server Finished Successfuly", userhashId] UserInfo:nil];
@@ -260,7 +261,8 @@
                 if (_logEnable)
                     [LogCenter NewLogTitle:@"SDK Engine" LogDescription:@"Sending Credentials to Server Finished Successfuly" UserInfo:nil];
 
-                NSArray *placementsInfoArray = (NSArray *)responseObject;
+                NSDictionary *data = (NSDictionary *)responseObject;
+                NSArray *placementsInfoArray = (NSArray *)[data objectForKey:@"response"];
                 for (int i = 0; i < [placementsInfoArray count]; i++)
                 {
                     NSDictionary *plModel               = (NSDictionary *)[placementsInfoArray objectAtIndex:i];
@@ -378,7 +380,8 @@
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
             if (httpResponse.statusCode == 200)
             {
-                NSDictionary *dict          = (NSDictionary *)responseObject;
+                NSDictionary *data          = (NSDictionary *)responseObject;
+                NSDictionary *dict          = [data objectForKey:@"response"];
                 NSString *placementHashId   = [dict valueForKey:@"placementId"];
                 NSArray *onlineArray        = [dict objectForKey:@"onlineContent"];
                 NSArray *offlineArray       = [dict objectForKey:@"offlineContent"];
