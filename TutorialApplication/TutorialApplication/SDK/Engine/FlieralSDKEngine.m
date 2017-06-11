@@ -29,8 +29,8 @@
 @property (nonatomic, strong, nullable) NSMutableArray * placementHashIdArray;
 @property (nonatomic, strong, nullable) NSMutableArray * placementManagerArray;
 
-@property (nonatomic, strong, nullable) NSDictionary * monitorData;
-@property (nonatomic, strong, nullable) NSDictionary * settingData;
+@property (nonatomic, strong, nullable) NSMutableDictionary * monitorData;
+@property (nonatomic, strong, nullable) NSMutableDictionary * settingData;
 
 @property (nonatomic) BOOL readyForStart;
 @property (nonatomic) BOOL readyForUse;
@@ -63,8 +63,8 @@
 		sharedService.placementHashIdArray  = [NSMutableArray array];
         sharedService.placementManagerArray = [NSMutableArray array];
         
-        sharedService.monitorData = [NSDictionary dictionary];
-        sharedService.settingData = [NSDictionary dictionary];
+        sharedService.monitorData = [NSMutableDictionary dictionary];
+        sharedService.settingData = [NSMutableDictionary dictionary];
         
 		sharedService.readyForUse       = false;
 		sharedService.readyForStart     = false;
@@ -86,14 +86,12 @@
         #endif
 
         sharedService.logEnable = false;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startMonitorAndSetting) name:UIApplicationWillEnterForegroundNotification object:nil];
 	});
 	
 	return sharedService;
 }
 
-- (void)AddSetting:(nullable NSDictionary *)setting
+- (void)AddSetting:(nullable NSMutableDictionary *)setting
 {
     if ([[setting valueForKey:@"logEnable"] isEqualToString:@"true"])
     {
@@ -141,10 +139,10 @@
         [LogCenter NewLogTitle:@"Authentication" LogDescription:[NSString stringWithFormat:@"Credentials %@:%@ Are Recorded Successfuly", publisherHashID, applicationHashID] UserInfo:nil];
 }
 
-- (nullable NSDictionary *)GetAuthenticationCredential
+- (nullable NSMutableDictionary *)GetAuthenticationCredential
 {
-    NSDictionary *dict = [NSDictionary      dictionary];
-	NSUserDefaults *ud = [NSUserDefaults    standardUserDefaults];
+    NSMutableDictionary *dict   = [NSMutableDictionary      dictionary];
+	NSUserDefaults *ud          = [NSUserDefaults           standardUserDefaults];
     [dict setValue:[ud valueForKey:FLPUBLISHERHASHIDKEY]    forKey:FLPUBLISHERHASHIDKEY];
     [dict setValue:[ud valueForKey:FLAPPLICATIONHASHIDKEY]  forKey:FLAPPLICATIONHASHIDKEY];
     
@@ -158,13 +156,14 @@
 
 - (void)AddPlacement:(nonnull NSString *)placementHashID
 {
-    if ([_placementHashIdArray indexOfObject:placementHashID])
-    {
-        if (_logEnable)
-            [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Adding Placement %@ Failed Due to Duplication", placementHashID] UserInfo:nil];
+    for (int i = 0; i < [_placementHashIdArray count]; i++)
+        if ([[_placementHashIdArray objectAtIndex:i] isEqualToString:placementHashID])
+        {
+            if (_logEnable)
+                [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Adding Placement %@ Failed Due to Duplication", placementHashID] UserInfo:nil];
 
-        return;
-    }
+            return;
+        }
         
     [_placementHashIdArray addObject:placementHashID];
 
@@ -209,7 +208,7 @@
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
                 if (httpResponse.statusCode == 200)
                 {
-                    NSDictionary *data = (NSDictionary *)responseObject;
+                    NSMutableDictionary *data = (NSMutableDictionary *)responseObject;
                     NSString *userhashId = [NSString stringWithString:[data valueForKey:@"response"]];
 
                     if (_logEnable)
@@ -261,11 +260,11 @@
                 if (_logEnable)
                     [LogCenter NewLogTitle:@"SDK Engine" LogDescription:@"Sending Credentials to Server Finished Successfuly" UserInfo:nil];
 
-                NSDictionary *data = (NSDictionary *)responseObject;
+                NSMutableDictionary *data = (NSMutableDictionary *)responseObject;
                 NSArray *placementsInfoArray = (NSArray *)[data objectForKey:@"response"];
                 for (int i = 0; i < [placementsInfoArray count]; i++)
                 {
-                    NSDictionary *plModel               = (NSDictionary *)[placementsInfoArray objectAtIndex:i];
+                    NSMutableDictionary *plModel        = (NSMutableDictionary *)[placementsInfoArray objectAtIndex:i];
                     FlieralPlacementManager *plManager  = [self GetPlacementWithHashID:[plModel valueForKey:@"id"]];
                     [plManager FillPlacementInstance:plModel];
                 }
@@ -292,7 +291,7 @@
 
         _settingData        = [_userManager getUserSetting];
         _monitorData        = [_monitorManager getMonitorSetting];
-        NSDictionary *dict  = [NSDictionary dictionary];
+        NSMutableDictionary *dict  = [NSMutableDictionary dictionary];
         [dict setValue:_settingData                 forKey:@"applicationModel"];
         [dict setValue:_monitorData                 forKey:@"pingModel"];
         [dict setValue:[_userManager getUserHashID] forKey:@"userId"];
@@ -342,7 +341,7 @@
         for (int i = 0; i < [_placementManagerArray count]; i++)
         {
             FlieralPlacementManager *plManager = [_placementManagerArray objectAtIndex:i];
-            if ([plManager GetPlacementStatus] == Enable)
+            if ([plManager GetPlacementStatus] == Enable && [plManager CheckPlacementVisibility])
             {
                 if ([plManager      GetPlacementPriority]   == HighPriority)
                     [highArray      addObject:plManager.instanceObject];
@@ -357,8 +356,9 @@
         
         for (int i = 0; i < [deleteArray count]; i++)
         {
-            [_placementManagerArray removeObjectAtIndex:(int)[deleteArray objectAtIndex:i]];
-            [_placementHashIdArray  removeObjectAtIndex:(int)[deleteArray objectAtIndex:i]];
+            NSNumber *ind = [deleteArray objectAtIndex:i];
+            [_placementManagerArray removeObjectAtIndex:[ind intValue]];
+            [_placementHashIdArray  removeObjectAtIndex:[ind intValue]];
         }
 
         if (_logEnable)
@@ -376,26 +376,31 @@
         [LogCenter NewLogTitle:@"SDK Engine" LogDescription:[NSString stringWithFormat:@"Preparing Sending Content Request After %i Seconds", time] UserInfo:nil];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [APIManager sendRequestForContent:placementsArray SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [APIManager sendRequestForContent:placementsArray userHashId:[_userManager getUserHashID] SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
             if (httpResponse.statusCode == 200)
             {
-                NSDictionary *data          = (NSDictionary *)responseObject;
-                NSDictionary *dict          = [data objectForKey:@"response"];
-                NSString *placementHashId   = [dict valueForKey:@"placementId"];
-                NSArray *onlineArray        = [dict objectForKey:@"onlineContent"];
-                NSArray *offlineArray       = [dict objectForKey:@"offlineContent"];
-                FlieralPlacementManager *plManager = [self GetPlacementWithHashID:placementHashId];
-                for (int i = 0; i < [onlineArray count]; i++)
+                NSMutableDictionary *data   = (NSMutableDictionary *)responseObject;
+                NSArray *responseArray      = (NSArray *) [data objectForKey:@"response"];
+                for (int k = 0; k < [responseArray count]; k++)
                 {
-                    PlacementModel *model = [[PlacementModel alloc] initWithModel:[onlineArray objectAtIndex:i]];
-                    [plManager AddPlacementOnlineContent:model];
+                    NSMutableDictionary *dict   = (NSMutableDictionary *) [responseArray objectAtIndex:k];
+                    NSString *placementHashId   = [dict valueForKey:@"placementId"];
+                    NSArray *onlineArray        = [dict objectForKey:@"onlineContent"];
+                    NSArray *offlineArray       = [dict objectForKey:@"offlineContent"];
+                    FlieralPlacementManager *plManager = [self GetPlacementWithHashID:placementHashId];
+                    for (int i = 0; i < [onlineArray count]; i++)
+                    {
+                        PlacementModel *model = [[PlacementModel alloc] initWithModel:[onlineArray objectAtIndex:i]];
+                        [plManager AddPlacementOnlineContent:model];
+                    }
+                    for (int i = 0; i < [offlineArray count]; i++)
+                    {
+                        PlacementModel *model = [[PlacementModel alloc] initWithModel:[offlineArray objectAtIndex:i]];
+                        [plManager AddPlacementOfflineContent:model];
+                    }
                 }
-                for (int i = 0; i < [offlineArray count]; i++)
-                {
-                    PlacementModel *model = [[PlacementModel alloc] initWithModel:[offlineArray objectAtIndex:i]];
-                    [plManager AddPlacementOfflineContent:model];
-                }
+                
                 _readyForWork = true;
                 
                 [_userManager setAuthenticationAndPlacementManagerEnable];
@@ -415,22 +420,14 @@
 
 - (nullable FlieralPlacementManager *)GetPlacementWithHashID:(nonnull NSString *)placementHashID;
 {
-    if (_readyForWork || _readyForStart)
-    {
-        for (int index = 0; index < [_placementHashIdArray count]; index++)
-            if ([[_placementHashIdArray objectAtIndex:index] isEqualToString:placementHashID])
-            {
-                if (_logEnable)
-                    [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Getting Placement (%@) Successfuly", placementHashID] UserInfo:nil];
-                
-                return [_placementManagerArray objectAtIndex:index];
-            }
-    }
-    else
-    {
-        if (_logEnable)
-            [LogCenter NewLogTitle:@"SDK Engine" LogDescription:@"Engine Is Not Ready For Getting Placements" UserInfo:nil];
-    }
+    for (int index = 0; index < [_placementHashIdArray count]; index++)
+        if ([[_placementHashIdArray objectAtIndex:index] isEqualToString:placementHashID])
+        {
+            if (_logEnable)
+                [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Getting Placement (%@) Successfuly", placementHashID] UserInfo:nil];
+            
+            return [_placementManagerArray objectAtIndex:index];
+        }
 
     if (_logEnable)
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Getting Placement (%@) Failed", placementHashID] UserInfo:nil];
@@ -451,7 +448,7 @@
     [_userManager       startSetting];
 }
 
-- (void)monitorResponse:(nonnull NSDictionary *)monitor
+- (void)monitorResponse:(nonnull NSMutableDictionary *)monitor
 {
     if (_logEnable)
         [LogCenter NewLogTitle:@"Monitor Service" LogDescription:@"Getting Response From Monitor Service Delegate Successfuly" UserInfo:nil];
@@ -461,7 +458,7 @@
     [self sendNewInformation];
 }
 
-- (void)settingResponse:(nonnull NSDictionary *)setting
+- (void)settingResponse:(nonnull NSMutableDictionary *)setting
 {
     if (_logEnable)
         [LogCenter NewLogTitle:@"Setting Service" LogDescription:@"Getting Response From Monitor Service Delegate Successfuly" UserInfo:nil];
@@ -480,7 +477,7 @@
         
         _settingData        = [_userManager    getUserSetting];
         _monitorData        = [_monitorManager getMonitorSetting];
-        NSDictionary *dict  = [NSDictionary dictionary];
+        NSMutableDictionary *dict  = [NSMutableDictionary dictionary];
         [dict setValue:_settingData                 forKey:@"applicationModel"];
         [dict setValue:_monitorData                 forKey:@"pingModel"];
         [dict setValue:[_userManager getUserHashID] forKey:@"userId"];

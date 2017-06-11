@@ -11,6 +11,7 @@
 #import "PlacementHelper.h"
 #import "PlacementModel.h"
 #import "PublicHeaders.h"
+#import <WebKit/WebKit.h>
 #import "Reachability.h"
 #import "CacheManager.h"
 #import "UserManager.h"
@@ -18,7 +19,7 @@
 #import "LogCenter.h"
 #import "NSQueue.h"
 
-@interface FlieralPlacementManager () <NSCoding, UIWebViewDelegate>
+@interface FlieralPlacementManager () <NSCoding, WKNavigationDelegate, WKScriptMessageHandler>
 {
 	Reachability *internetReachabilityChecker;
 }
@@ -30,23 +31,26 @@
 @property (nonatomic) StyleType		placementStyle;
 @property (nonatomic) StatusType	placementStatus;
 
-@property (nonatomic, copy, nullable) void (^preLoadBlock)(NSDictionary         * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didLoadBlock)(NSDictionary         * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^failedLoadBlock)(NSDictionary      * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^willAppearBlock)(NSDictionary      * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didAppearBlock)(NSDictionary       * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^willDisappearBlock)(NSDictionary   * _Nonnull details);
-@property (nonatomic, copy, nullable) void (^didDisappearBlock)(NSDictionary    * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^preLoadBlock)(NSMutableDictionary         * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^didLoadBlock)(NSMutableDictionary         * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^failedLoadBlock)(NSMutableDictionary      * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^willAppearBlock)(NSMutableDictionary      * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^didAppearBlock)(NSMutableDictionary       * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^willDisappearBlock)(NSMutableDictionary   * _Nonnull details);
+@property (nonatomic, copy, nullable) void (^didDisappearBlock)(NSMutableDictionary    * _Nonnull details);
 
 @property (nonatomic, strong, nonnull) UIView * parentView;
 
 @property (nonnull, strong) NSMutableArray * placementOnlineArray;
 @property (nonnull, strong) NSMutableArray * placementOfflineArray;
 
-@property (nonatomic, strong) UIWebView         * currentPlacementView;
+@property (nonatomic, strong) WKWebView         * currentPlacementView;
 @property (nonatomic, strong) PlacementModel    * currentPlacementModel;
 
 @property (nonatomic, strong) FlieralSDKEngine  * SDKEngine;
+
+@property (nonatomic) NSTimeInterval  beginningTime;
+@property (nonatomic) NSTimeInterval  endingTime;
 
 @end
 
@@ -85,7 +89,7 @@
 
 #pragma mark - Fill Placement Instance
 
-- (void)FillPlacementInstance:(nonnull NSDictionary *)modelInstance
+- (void)FillPlacementInstance:(nonnull NSMutableDictionary *)modelInstance
 {
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Filling Placement Manager Instance Successfuly", _placementHashID] UserInfo:nil];
@@ -121,6 +125,9 @@
         _placementStatus = Enable;
     else if ([statusInst isEqualToString:@"Disable"])
         _placementStatus = Disable;
+
+    _beginningTime  = [[modelInstance valueForKey:@"beginningTime"] doubleValue];
+    _endingTime     = [[modelInstance valueForKey:@"endingTime"]    doubleValue];
     
     _instanceObject = modelInstance;
     
@@ -135,6 +142,14 @@
 - (StatusType)GetPlacementStatus
 {
     return _placementStatus;
+}
+
+- (BOOL)CheckPlacementVisibility
+{
+    NSTimeInterval now = ([[NSDate date] timeIntervalSince1970] * 1000);
+    if (now >= _beginningTime && now <= _endingTime)
+        return true;
+    return false;
 }
 
 - (void)AddPlacementOnlineContent:(nonnull PlacementModel *)modelInstance
@@ -159,9 +174,9 @@
 {
     [self EventListener:PreLoad Details:nil];
     
-    NSString *fileName = modelInstance.subcampaignHashID;
+    NSString *fileName = [NSString stringWithFormat:@"%@.html", modelInstance.subcampaignHashID];
     
-    NSDictionary *dict = [NSDictionary dictionary];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setValue:modelInstance.campaignHashID     forKey:@"campaignHashId"];
     [dict setValue:modelInstance.subcampaignHashID  forKey:@"subcampaignHashId"];
     
@@ -187,26 +202,32 @@
                     [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Downloading Content To Offline Queue Finished Successfuly", _placementHashID] UserInfo:nil];
 
                 [_offlineQueue  enqueue:modelInstance];
-                [self EventListener:FailedLoad Details:nil];
+                [self EventListener:DidLoad Details:nil];
             }
+            
+            [[PlacementHelper sharedHelper] saveTimerForContent:modelInstance.subcampaignHashID];
+            [self savePlacementManager];
             
         } failedBlock:^(NSError * _Nonnull error) {
 
             if ([_SDKEngine LogEnable])
                 [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Downloading Content To Offline Queue Failed Successfuly", _placementHashID] UserInfo:nil];
 
+            [self EventListener:FailedLoad Details:nil];
         }];
     }
     else
+    {
         [self EventListener:DidLoad Details:nil];
-    
-    [[PlacementHelper sharedHelper] saveTimerForContent:modelInstance.subcampaignHashID];
-    [self savePlacementManager];
+        
+        [[PlacementHelper sharedHelper] saveTimerForContent:modelInstance.subcampaignHashID];
+        [self savePlacementManager];
+    }
 }
 
 #pragma mark - Block Event Action Listener
 
-- (void)SetPreLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) preLoadBlock
+- (void)SetPreLoadBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) preLoadBlock
 {
     _preLoadBlock = preLoadBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preLoadBlock)         name:FLPRELOADVIEW          object:nil];
@@ -215,7 +236,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding PreLoad Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetDidLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) didLoadBlock
+- (void)SetDidLoadBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) didLoadBlock
 {
     _didLoadBlock = didLoadBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadBlock)         name:FLDIDLOADVIEW          object:nil];
@@ -224,7 +245,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding DidLoad Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetFailedLoadBlock:(nullable void (^)(NSDictionary * _Nonnull details)) failedLoadBlock
+- (void)SetFailedLoadBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) failedLoadBlock
 {
     _failedLoadBlock = failedLoadBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedLoadBlock)      name:FLFAILEDLOADVIEW       object:nil];
@@ -233,7 +254,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding FailedLoad Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetWillAppearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) willAppearBlock
+- (void)SetWillAppearBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) willAppearBlock
 {
     _willAppearBlock = willAppearBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willAppearBlock)      name:FLWILLAPPEARVIEW       object:nil];
@@ -242,7 +263,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding WillAppear Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetDidAppearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) didAppearBlock
+- (void)SetDidAppearBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) didAppearBlock
 {
     _didAppearBlock = didAppearBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppearBlock)       name:FLDIDAPPEARVIEW        object:nil];
@@ -251,7 +272,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding DidAppear Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetWillDisappearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) willDisappearBlock
+- (void)SetWillDisappearBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) willDisappearBlock
 {
     _willDisappearBlock = willDisappearBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDisappearBlock)   name:FLWILLDISAPPEARVIEW    object:nil];
@@ -260,7 +281,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding WillDisappear Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)SetDidDisappearBlock:(nullable void (^)(NSDictionary * _Nonnull details)) didDisappearBlock
+- (void)SetDidDisappearBlock:(nullable void (^)(NSMutableDictionary * _Nonnull details)) didDisappearBlock
 {
     _didDisappearBlock = didDisappearBlock;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDisappearBlock)    name:FLDIDDISAPPEARVIEW     object:nil];
@@ -269,7 +290,7 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Adding DidDisappear Listener To Placement Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)EventListener:(Event)eventAction Details:(nullable NSDictionary *) details
+- (void)EventListener:(Event)eventAction Details:(nullable NSMutableDictionary *) details
 {
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Preapring For Firing Block Event %ld", _placementHashID, (long)eventAction] UserInfo:nil];
@@ -280,31 +301,38 @@
     switch (eventAction)
     {
         case PreLoad:
-            _preLoadBlock(details);
+            if (_preLoadBlock)
+                _preLoadBlock(details);
             break;
             
         case DidLoad:
-            _didLoadBlock(details);
+            if (_didLoadBlock)
+                _didLoadBlock(details);
             break;
             
         case FailedLoad:
-            _failedLoadBlock(details);
+            if (_failedLoadBlock)
+                _failedLoadBlock(details);
             break;
             
         case WillAppear:
-            _willAppearBlock(details);
+            if (_willAppearBlock)
+                _willAppearBlock(details);
             break;
             
         case DidAppear:
-            _didAppearBlock(details);
+            if (_didAppearBlock)
+                _didAppearBlock(details);
             break;
             
         case WillDisappear:
-            _willDisappearBlock(details);
+            if (_willDisappearBlock)
+                _willDisappearBlock(details);
             break;
             
         case DidDisappear:
-            _didDisappearBlock(details);
+            if (_didDisappearBlock)
+                _didDisappearBlock(details);
             break;
             
         default:
@@ -315,10 +343,9 @@
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Listener %ld Fired Successfuly", _placementHashID, (long)eventAction] UserInfo:nil];
 }
 
-- (void)saveCache:(nonnull NSString *)data
+- (void)saveCache:(nonnull NSDictionary *)data
 {
-    NSError *err;
-    NSDictionary *dict = [NSPropertyListSerialization propertyListWithData:[data dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions format:NULL error:&err];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:data];
     [[CacheManager sharedManager] addNewCacheModel:dict];
     
     if ([_SDKEngine LogEnable])
@@ -341,12 +368,10 @@
 {
 	if (!_parentView || _placementStatus != Enable)
 		return;
-
-    [self EventListener:WillAppear Details:nil];
     
-	if ([internetReachabilityChecker isReachable])
+	if ([internetReachabilityChecker isReachable] && [_onlineQueue checkFillQueue])
 		[self showOnlineContent];
-	else
+	else if (![internetReachabilityChecker isReachable] && [_offlineQueue checkFillQueue])
 		[self showOfflineContent];
 }
 
@@ -380,10 +405,14 @@
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Preparing For Online Content Show", _placementHashID] UserInfo:nil];
 
-    UIWebView *placementContent = [[UIWebView alloc] initWithFrame:[self frameForType]];
+    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
+    [theConfiguration.userContentController addScriptMessageHandler:self name:@"FlieralSDK"];
+
+    WKWebView *placementContent = [[WKWebView alloc] initWithFrame:[self frameForType] configuration:theConfiguration];
+    placementContent.navigationDelegate = self;
     PlacementModel *model       = (PlacementModel *)[_onlineQueue dequeue];
-    
-    [placementContent loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:model.fileURL]]];
+
+    [placementContent loadFileURL:model.contentURL allowingReadAccessToURL:model.contentURL];
 
     [self showWebView:placementContent PlacementModel:model];
 
@@ -396,18 +425,22 @@
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Preparing For Offline Content Show", _placementHashID] UserInfo:nil];
 
-    UIWebView *placementContent = [[UIWebView alloc] initWithFrame:[self frameForType]];
-    PlacementModel *model = (PlacementModel *)[_offlineQueue dequeue];
+    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
+    [theConfiguration.userContentController addScriptMessageHandler:self name:@"FlieralSDK"];
     
-    [placementContent loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:model.fileURL]]];
-
+    WKWebView *placementContent = [[WKWebView alloc] initWithFrame:[self frameForType] configuration:theConfiguration];
+    placementContent.navigationDelegate = self;
+    PlacementModel *model       = (PlacementModel *)[_offlineQueue dequeue];
+    
+    [placementContent loadFileURL:model.contentURL allowingReadAccessToURL:model.contentURL];
+    
     [self showWebView:placementContent PlacementModel:model];
     
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Offline Content Show Prepared Successfuly", _placementHashID] UserInfo:nil];
 }
 
-- (void)showWebView:(UIWebView *)webView PlacementModel:(PlacementModel *)model
+- (void)showWebView:(WKWebView *)webView PlacementModel:(PlacementModel *)model
 {
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Preparing For Adding Placement To Superview", _placementHashID] UserInfo:nil];
@@ -416,7 +449,9 @@
     NSString *timerKey      = [FLSTORAGETIMERKEY stringByAppendingString:model.placementHashID];
     NSString *hiddenKey     = [FLSTORAGEHIDDENKEY stringByAppendingString:model.placementHashID];
     
-    [_currentPlacementView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"setInfo(%@, %@);", [UserManager getUserHashID], _currentPlacementModel.subcampaignHashID]];
+    [self EventListener:WillAppear Details:nil];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     if ([ud boolForKey:hiddenKey])
     {
@@ -424,11 +459,11 @@
         {
             _currentPlacementModel  = model;
             _currentPlacementView   = webView;
-
-            [self setConstraint];
             
             [webView        setHidden:false];
             [_parentView    addSubview:webView];
+            
+            [self setConstraint];
             
             [ud setBool:false forKey:hiddenKey];
             [ud synchronize];
@@ -442,8 +477,6 @@
         _currentPlacementModel  = model;
         _currentPlacementView   = webView;
         
-        [self setConstraint];
-        
         [_parentView addSubview:webView];
         [self fetchNextContents];
         
@@ -451,7 +484,12 @@
             [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Added To Superview Successfuly", _placementHashID] UserInfo:nil];
     }
     
-    [_currentPlacementView setDelegate:self];
+    NSMutableDictionary *actionDict     = [NSMutableDictionary dictionary];
+    NSString *time = [NSString stringWithFormat:@"%i", (int)([[NSDate date] timeIntervalSince1970] * 1000)];
+    [actionDict     setObject:time          forKey:@"time"];
+    [actionDict     setObject:@"View"       forKey:@"event"];
+
+    [self sendEventData:actionDict AnnouncerData:[_currentPlacementModel getAnnouncerModel] PublisherData:[_currentPlacementModel getPublisherModel]];
     
     [self EventListener:DidAppear Details:nil];
 }
@@ -489,7 +527,7 @@
                 if ([_SDKEngine LogEnable])
                     [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Didn't Become Shown After Hiding", _placementHashID] UserInfo:nil];
 
-                NSDictionary *innerDict = [NSDictionary dictionary];
+                NSMutableDictionary *innerDict = [NSMutableDictionary dictionary];
                 [innerDict setValue:@"Report" forKey:@"event"];
                 [innerDict setValue:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970] * 1000.0] forKey:@"time"];
                 
@@ -528,6 +566,8 @@
     _currentPlacementModel  = nil;
     
     [self EventListener:DidDisappear Details:nil];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Removed From Superview Successfuly", _placementHashID] UserInfo:nil];
@@ -639,7 +679,10 @@
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Manager Loaded Successfuly", _placementHashID] UserInfo:nil];
 
-    return (FlieralPlacementManager *)[NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    if (encodedObject)
+        return (FlieralPlacementManager *)[NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    
+    return nil;
 }
 
 - (void)loadQueuesForPlacementManager:(nonnull NSString *)placementHashId
@@ -659,8 +702,29 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    [encoder encodeObject:self.placementHashID      forKey:@"PLACEMENTHASHID"];
-    // rem
+    [encoder encodeObject:self.placementHashID          forKey:@"PLACEMENTHASHID"];
+    [encoder encodeObject:self.placementHashID          forKey:@"PLACEMENTHASHID"];
+    [encoder encodeObject:self.instanceObject           forKey:@"INSTANCEOBJECT"];
+    [encoder encodeObject:self.onlineQueue              forKey:@"ONLINEQUEUE"];
+    [encoder encodeObject:self.offlineQueue             forKey:@"OFFLINEQUQUE"];
+    [encoder encodeInt:self.placementPriority           forKey:@"PLACEMENTPRIORITY"];
+    [encoder encodeInt:self.placementStyle              forKey:@"PLACEMENTSTYLE"];
+    [encoder encodeInt:self.placementStatus             forKey:@"PLACEMENTSTATUS"];
+    [encoder encodeObject:self.parentView               forKey:@"PARENTVIEW"];
+    [encoder encodeObject:self.placementOnlineArray     forKey:@"PLACEMENTONLINEARRAY"];
+    [encoder encodeObject:self.placementOfflineArray    forKey:@"PLACEMENTOFFLINEARRAY"];
+    [encoder encodeObject:self.currentPlacementView     forKey:@"CURRENTPLACEMENTVIEW"];
+    [encoder encodeObject:self.currentPlacementModel    forKey:@"CURRENTPLACEMENTMODEL"];
+    [encoder encodeDouble:self.beginningTime            forKey:@"BEGINNINGTIME"];
+    [encoder encodeDouble:self.endingTime               forKey:@"ENDINGTIME"];
+    [encoder encodeObject:self.preLoadBlock             forKey:@"PRELOADBLOCK"];
+    [encoder encodeObject:self.didLoadBlock             forKey:@"DIDLOADBLOCK"];
+    [encoder encodeObject:self.failedLoadBlock          forKey:@"FAILEDLOADBLOCK"];
+    [encoder encodeObject:self.willAppearBlock          forKey:@"WILLAPPEARBLOCK"];
+    [encoder encodeObject:self.didAppearBlock           forKey:@"DIDAPPEARBLOCK"];
+    [encoder encodeObject:self.willDisappearBlock       forKey:@"WILLDISAPPEARBLOCK"];
+    [encoder encodeObject:self.didDisappearBlock        forKey:@"DIDDISAPPEARBLOCK"];
+    
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)decoder
@@ -668,29 +732,116 @@
     self = [super init];
     if(self)
     {
-        self.placementHashID      = [decoder decodeObjectForKey:@"PLACEMENTHASHID"];
-        // rem
+        self.placementHashID        = [decoder decodeObjectForKey:@"PLACEMENTHASHID"];
+        self.instanceObject         = [decoder decodeObjectForKey:@"INSTANCEOBJECT"];
+        self.onlineQueue            = [decoder decodeObjectForKey:@"ONLINEQUEUE"];
+        self.offlineQueue           = [decoder decodeObjectForKey:@"OFFLINEQUQUE"];
+        self.placementPriority      = [decoder decodeIntForKey:@"PLACEMENTPRIORITY"];
+        self.placementStyle         = [decoder decodeIntForKey:@"PLACEMENTSTYLE"];
+        self.placementStatus        = [decoder decodeIntForKey:@"PLACEMENTSTATUS"];
+        self.parentView             = [decoder decodeObjectForKey:@"PARENTVIEW"];
+        self.placementOnlineArray   = [decoder decodeObjectForKey:@"PLACEMENTONLINEARRAY"];
+        self.placementOfflineArray  = [decoder decodeObjectForKey:@"PLACEMENTOFFLINEARRAY"];
+        self.currentPlacementView   = [decoder decodeObjectForKey:@"CURRENTPLACEMENTVIEW"];
+        self.currentPlacementModel  = [decoder decodeObjectForKey:@"CURRENTPLACEMENTMODEL"];
+        self.beginningTime          = [decoder decodeDoubleForKey:@"BEGINNINGTIME"];
+        self.endingTime             = [decoder decodeDoubleForKey:@"ENDINGTIME"];
+        self.preLoadBlock           = [decoder decodeObjectForKey:@"PRELOADBLOCK"];
+        self.didLoadBlock           = [decoder decodeObjectForKey:@"DIDLOADBLOCK"];
+        self.failedLoadBlock        = [decoder decodeObjectForKey:@"FAILEDLOADBLOCK"];
+        self.willAppearBlock        = [decoder decodeObjectForKey:@"WILLAPPEARBLOCK"];
+        self.didAppearBlock         = [decoder decodeObjectForKey:@"DIDAPPEARBLOCK"];
+        self.willDisappearBlock     = [decoder decodeObjectForKey:@"WILLDISAPPEARBLOCK"];
+        self.didDisappearBlock      = [decoder decodeObjectForKey:@"DIDDISAPPEARBLOCK"];
     }
     return self;
 }
 
 #pragma mark - UI Web View Delegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSString *myAppScheme = @"FlieralSDK";
-    NSString *myActionType = @"saveCache";
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+    NSDictionary *sentData      = (NSDictionary *)message.body;
+    NSString *actionType        = [sentData objectForKey:@"function"];
     
-    if (![request.URL.scheme isEqualToString:myAppScheme])
-        return YES;
-    
-    NSString *actionType = request.URL.host;
-    NSString *jsonDictString = [request.URL.fragment stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-    
-    if ([actionType isEqualToString:myActionType])
+    NSString *saveAction    = @"saveCache";
+    NSString *removeAction  = @"removePlacement";
+    NSString *clickAction   = @"clickedPlacement";
+
+    if ([actionType isEqualToString:saveAction])
+    {
+        NSDictionary *jsonDictString    = [sentData objectForKey:@"input"];
         [self saveCache:jsonDictString];
+    }
     
-    return NO;
+    if ([actionType isEqualToString:removeAction])
+        [self removePlacement];
+    
+    if ([actionType isEqualToString:clickAction])
+    {
+        NSDictionary *jsonDictString    = [sentData objectForKey:@"input"];
+        NSDictionary *dict = jsonDictString;
+        
+        NSMutableDictionary *announcerDict  = [NSMutableDictionary dictionary];
+        [announcerDict  setObject:[dict objectForKey:@"announcerHashId"]     forKey:@"announcerHashId"];
+        [announcerDict  setObject:[dict objectForKey:@"campaignHashId"]      forKey:@"campaignHashId"];
+        [announcerDict  setObject:[dict objectForKey:@"subcampaignHashId"]   forKey:@"subcampaignHashId"];
+        
+        NSMutableDictionary *publisherDict  = [NSMutableDictionary dictionary];
+        [publisherDict  setObject:[dict objectForKey:@"publisherHashId"]     forKey:@"publisherHashId"];
+        [publisherDict  setObject:[dict objectForKey:@"applicationHashId"]   forKey:@"applicationHashId"];
+        [publisherDict  setObject:[dict objectForKey:@"placementHashId"]     forKey:@"placementHashId"];
+        
+        NSMutableDictionary *actionDict     = [NSMutableDictionary dictionary];
+        [actionDict     setObject:[dict objectForKey:@"time"]       forKey:@"time"];
+        [actionDict     setObject:@"Click"                          forKey:@"event"];
+        
+        [self sendEventData:actionDict AnnouncerData:announcerDict PublisherData:publisherDict];
+    }
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    NSString *jsFunction = [NSString stringWithFormat:@"setInfo(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\");", [UserManager getUserHashID], _currentPlacementModel.subcampaignHashID, _currentPlacementModel.campaignHashID, _currentPlacementModel.announcerHashID, _currentPlacementModel.placementHashID, _currentPlacementModel.applicationHashID, _currentPlacementModel.publisherHashID];
+
+    [_currentPlacementView evaluateJavaScript:jsFunction completionHandler:^(NSString * _Nullable result, NSError * _Nullable error) {
+        if (error)
+        {
+            NSLog(@"%@", error);
+            if ([_SDKEngine LogEnable])
+                [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Evaluating JavaScript Function Failed", _placementHashID] UserInfo:nil];
+        }
+    }];
+}
+
+#pragma mark - Statistics Operations
+
+- (void)sendEventData:(nonnull NSMutableDictionary *)actionData AnnouncerData:(nonnull NSMutableDictionary *)announcerData PublisherData:(nonnull NSMutableDictionary *)publisherData
+{
+    if ([_SDKEngine LogEnable])
+        [LogCenter NewLogTitle:@"Placement Manager" LogDescription:@"Preparing Environement For Sending Stats to Backend" UserInfo:nil];
+    
+    NSMutableDictionary *innerDict = [NSMutableDictionary dictionary];
+    [innerDict setValue:@"Report" forKey:@"event"];
+    [innerDict setValue:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970] * 1000.0] forKey:@"time"];
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:[UserManager getUserPublicSetting]          forKey:@"userInfo"];
+    [dict setObject:announcerData  forKey:@"announcerInfo"];
+    [dict setObject:publisherData  forKey:@"publisherInfo"];
+    [dict setObject:actionData     forKey:@"actionInfo"];
+    
+    [APIManager sendReportToBackend:dict SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)task.response;
+        if (httpResponse.statusCode == 200)
+        {
+            if ([_SDKEngine LogEnable])
+                [LogCenter NewLogTitle:@"Placement Manager" LogDescription:@"Sending Stats Data to Backend Finished Successfuly" UserInfo:nil];
+        }
+    } failedBlock:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+        if ([_SDKEngine LogEnable])
+            [LogCenter NewLogTitle:@"Placement Manager" LogDescription:@"Sending Stats Data to Backend Failed" UserInfo:nil];
+    }];
 }
 
 @end

@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, VerboseType)
 
 + (nullable FlieralSDKEngine *)SDKEngine;
 
-- (void)AddSetting:(nullable NSDictionary *)setting;
+- (void)AddSetting:(nullable NSMutableDictionary *)setting;
 
 - (void)Authenticate:(nonnull NSString *)publisherHashID ApplicationHashID:(nonnull NSString *)applicationHashID;
 

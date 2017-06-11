@@ -51,11 +51,11 @@ typedef NS_ENUM(NSInteger, Event)
 @interface FlieralPlacementManager : NSObject
 
 @property (nonatomic, strong, nonnull) NSString     * placementHashID;
-@property (nonatomic, strong, nonnull) NSDictionary * instanceObject;
+@property (nonatomic, strong, nonnull) NSMutableDictionary * instanceObject;
 
 - (nullable id)initWithPlacementHashId:(nonnull NSString *)placementHashId;
 
-- (void)FillPlacementInstance:(nonnull NSDictionary *)modelInstance;
+- (void)FillPlacementInstance:(nonnull NSMutableDictionary *)modelInstance;
 
 - (void)AddPlacementOnlineContent:(nonnull PlacementModel *)modelInstance;
 - (void)AddPlacementOfflineContent:(nonnull PlacementModel *)modelInstance;
@@ -63,18 +63,20 @@ typedef NS_ENUM(NSInteger, Event)
 - (void)SetParentView:(nonnull UIView *)view;
 - (void)SetParentViewController:(nonnull UIViewController *)viewController;
 
-- (void)SetPreLoadBlock:(nullable void (^)(NSDictionary         * _Nonnull details)) preLoadBlock;
-- (void)SetDidLoadBlock:(nullable void (^)(NSDictionary         * _Nonnull details)) didLoadBlock;
-- (void)SetFailedLoadBlock:(nullable void (^)(NSDictionary      * _Nonnull details)) failedLoadBlock;
-- (void)SetWillAppearBlock:(nullable void (^)(NSDictionary      * _Nonnull details)) willAppearBlock;
-- (void)SetDidAppearBlock:(nullable void (^)(NSDictionary       * _Nonnull details)) didAppearBlock;
-- (void)SetWillDisappearBlock:(nullable void (^)(NSDictionary   * _Nonnull details)) willDisappearBlock;
-- (void)SetDidDisappearBlock:(nullable void (^)(NSDictionary    * _Nonnull details)) didDisappearBlock;
+- (void)SetPreLoadBlock:(nullable void (^)(NSMutableDictionary         * _Nonnull details)) preLoadBlock;
+- (void)SetDidLoadBlock:(nullable void (^)(NSMutableDictionary         * _Nonnull details)) didLoadBlock;
+- (void)SetFailedLoadBlock:(nullable void (^)(NSMutableDictionary      * _Nonnull details)) failedLoadBlock;
+- (void)SetWillAppearBlock:(nullable void (^)(NSMutableDictionary      * _Nonnull details)) willAppearBlock;
+- (void)SetDidAppearBlock:(nullable void (^)(NSMutableDictionary       * _Nonnull details)) didAppearBlock;
+- (void)SetWillDisappearBlock:(nullable void (^)(NSMutableDictionary   * _Nonnull details)) willDisappearBlock;
+- (void)SetDidDisappearBlock:(nullable void (^)(NSMutableDictionary    * _Nonnull details)) didDisappearBlock;
 
 - (void)Hide;
 - (void)Show;
 
 - (PriorityType)GetPlacementPriority;
 - (StatusType)GetPlacementStatus;
+
+- (BOOL)CheckPlacementVisibility;
 
 @end
