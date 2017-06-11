@@ -79,7 +79,7 @@
                 [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Loading Placement Manager Pointer Successfuly", placementHashId] UserInfo:nil];
 
             self = [self loadPlacementManager:placementHashId];
-            [self loadQueuesForPlacementManager:placementHashId];
+//            [self loadQueuesForPlacementManager:placementHashId];
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
@@ -463,8 +463,6 @@
             [webView        setHidden:false];
             [_parentView    addSubview:webView];
             
-            [self setConstraint];
-            
             [ud setBool:false forKey:hiddenKey];
             [ud synchronize];
             
@@ -567,7 +565,7 @@
     
     [self EventListener:DidDisappear Details:nil];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Placement Removed From Superview Successfuly", _placementHashID] UserInfo:nil];
@@ -703,28 +701,18 @@
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
     [encoder encodeObject:self.placementHashID          forKey:@"PLACEMENTHASHID"];
-    [encoder encodeObject:self.placementHashID          forKey:@"PLACEMENTHASHID"];
     [encoder encodeObject:self.instanceObject           forKey:@"INSTANCEOBJECT"];
     [encoder encodeObject:self.onlineQueue              forKey:@"ONLINEQUEUE"];
     [encoder encodeObject:self.offlineQueue             forKey:@"OFFLINEQUQUE"];
     [encoder encodeInt:self.placementPriority           forKey:@"PLACEMENTPRIORITY"];
     [encoder encodeInt:self.placementStyle              forKey:@"PLACEMENTSTYLE"];
     [encoder encodeInt:self.placementStatus             forKey:@"PLACEMENTSTATUS"];
-    [encoder encodeObject:self.parentView               forKey:@"PARENTVIEW"];
     [encoder encodeObject:self.placementOnlineArray     forKey:@"PLACEMENTONLINEARRAY"];
     [encoder encodeObject:self.placementOfflineArray    forKey:@"PLACEMENTOFFLINEARRAY"];
     [encoder encodeObject:self.currentPlacementView     forKey:@"CURRENTPLACEMENTVIEW"];
     [encoder encodeObject:self.currentPlacementModel    forKey:@"CURRENTPLACEMENTMODEL"];
     [encoder encodeDouble:self.beginningTime            forKey:@"BEGINNINGTIME"];
     [encoder encodeDouble:self.endingTime               forKey:@"ENDINGTIME"];
-    [encoder encodeObject:self.preLoadBlock             forKey:@"PRELOADBLOCK"];
-    [encoder encodeObject:self.didLoadBlock             forKey:@"DIDLOADBLOCK"];
-    [encoder encodeObject:self.failedLoadBlock          forKey:@"FAILEDLOADBLOCK"];
-    [encoder encodeObject:self.willAppearBlock          forKey:@"WILLAPPEARBLOCK"];
-    [encoder encodeObject:self.didAppearBlock           forKey:@"DIDAPPEARBLOCK"];
-    [encoder encodeObject:self.willDisappearBlock       forKey:@"WILLDISAPPEARBLOCK"];
-    [encoder encodeObject:self.didDisappearBlock        forKey:@"DIDDISAPPEARBLOCK"];
-    
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)decoder
@@ -739,20 +727,12 @@
         self.placementPriority      = [decoder decodeIntForKey:@"PLACEMENTPRIORITY"];
         self.placementStyle         = [decoder decodeIntForKey:@"PLACEMENTSTYLE"];
         self.placementStatus        = [decoder decodeIntForKey:@"PLACEMENTSTATUS"];
-        self.parentView             = [decoder decodeObjectForKey:@"PARENTVIEW"];
         self.placementOnlineArray   = [decoder decodeObjectForKey:@"PLACEMENTONLINEARRAY"];
         self.placementOfflineArray  = [decoder decodeObjectForKey:@"PLACEMENTOFFLINEARRAY"];
         self.currentPlacementView   = [decoder decodeObjectForKey:@"CURRENTPLACEMENTVIEW"];
         self.currentPlacementModel  = [decoder decodeObjectForKey:@"CURRENTPLACEMENTMODEL"];
         self.beginningTime          = [decoder decodeDoubleForKey:@"BEGINNINGTIME"];
         self.endingTime             = [decoder decodeDoubleForKey:@"ENDINGTIME"];
-        self.preLoadBlock           = [decoder decodeObjectForKey:@"PRELOADBLOCK"];
-        self.didLoadBlock           = [decoder decodeObjectForKey:@"DIDLOADBLOCK"];
-        self.failedLoadBlock        = [decoder decodeObjectForKey:@"FAILEDLOADBLOCK"];
-        self.willAppearBlock        = [decoder decodeObjectForKey:@"WILLAPPEARBLOCK"];
-        self.didAppearBlock         = [decoder decodeObjectForKey:@"DIDAPPEARBLOCK"];
-        self.willDisappearBlock     = [decoder decodeObjectForKey:@"WILLDISAPPEARBLOCK"];
-        self.didDisappearBlock      = [decoder decodeObjectForKey:@"DIDDISAPPEARBLOCK"];
     }
     return self;
 }
@@ -778,6 +758,8 @@
     
     if ([actionType isEqualToString:clickAction])
     {
+        [self removePlacement];
+
         NSDictionary *jsonDictString    = [sentData objectForKey:@"input"];
         NSDictionary *dict = jsonDictString;
         
@@ -819,7 +801,7 @@
 {
     if ([_SDKEngine LogEnable])
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:@"Preparing Environement For Sending Stats to Backend" UserInfo:nil];
-    
+
     NSMutableDictionary *innerDict = [NSMutableDictionary dictionary];
     [innerDict setValue:@"Report" forKey:@"event"];
     [innerDict setValue:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970] * 1000.0] forKey:@"time"];
