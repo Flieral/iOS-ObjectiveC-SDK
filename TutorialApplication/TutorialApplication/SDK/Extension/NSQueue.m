@@ -12,7 +12,7 @@
 #define QUEUECAPACITYKEY	@"FlieralQueueCapacityKey"
 #define QUEUECACHEPOLICYKEY	@"FlieralQueueCachePolicyKey"
 
-@interface NSQueue()
+@interface NSQueue() <NSCoding>
 
 @property (nonatomic, strong) NSMutableArray  * data;
 @property (nonatomic, strong) NSString        * identifier;
@@ -152,6 +152,29 @@
     if (_data.count > 0)
         return true;
     return false;
+}
+
+#pragma mark - NSCoding Delegate
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.data             forKey:@"QUEUEDATA"];
+    [encoder encodeObject:self.identifier       forKey:@"QUEUEIDENTIFIER"];
+    [encoder encodeInteger:self.capacity        forKey:@"QUEUECAPACITY"];
+    [encoder encodeBool:self.useCachePolicy     forKey:@"QUEUECACHEPOLICY"];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if(self)
+    {
+        self.data               = [decoder decodeObjectForKey:@"QUEUEDATA"];
+        self.identifier         = [decoder decodeObjectForKey:@"QUEUEIDENTIFIER"];
+        self.capacity           = [decoder decodeIntegerForKey:@"QUEUECAPACITY"];
+        self.useCachePolicy     = [decoder decodeBoolForKey:@"QUEUECACHEPOLICY"];
+    }
+    return self;
 }
 
 @end
