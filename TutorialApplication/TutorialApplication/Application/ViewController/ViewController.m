@@ -22,7 +22,12 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     [self configuringFirstPlacement];
     [self configuringSecondPlacement];
     [self configuringThirdPlacement];
@@ -39,31 +44,31 @@
 {
     [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetParentViewController:self];
 
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetPreLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetPreLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: Preload");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: DidLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetFailedLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetFailedLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: FailedLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetWillAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetWillAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: WillAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: DidAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetWillDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetWillDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: WillDisappear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:FIRST_PLACEMENT] SetDidDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #1 - Trigger Fired: DidDisappear");
     }];
 }
@@ -72,31 +77,31 @@
 {
     [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetParentViewController:self];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetPreLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetPreLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: Preload");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: DidLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetFailedLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetFailedLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: FailedLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetWillAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetWillAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: WillAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: DidAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetWillDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetWillDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: WillDisappear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:SECOND_PLACEMENT] SetDidDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #2 - Trigger Fired: DidDisappear");
     }];
 }
@@ -105,31 +110,31 @@
 {
     [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetParentViewController:self];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetPreLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetPreLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: Preload");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: DidLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetFailedLoadBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetFailedLoadBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: FailedLoad");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetWillAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetWillAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: WillAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidAppearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidAppearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: DidAppear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetWillDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetWillDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: WillDisappear");
     }];
     
-    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidDisappearBlock:^(NSDictionary * _Nonnull details) {
+    [[[FlieralSDKEngine SDKEngine] GetPlacementWithHashID:THIRD_PLACEMENT] SetDidDisappearBlock:^(NSMutableDictionary * _Nonnull details) {
         NSLog(@"Inside Placement #3 - Trigger Fired: DidDisappear");
     }];
 }

@@ -10,7 +10,7 @@
 
 @implementation CacheModel
 
-- (nonnull instancetype)initWithModel:(nonnull NSDictionary *)model
+- (nonnull instancetype)initWithModel:(nonnull NSMutableDictionary *)model
 {
     self = [super init];
     if (self)

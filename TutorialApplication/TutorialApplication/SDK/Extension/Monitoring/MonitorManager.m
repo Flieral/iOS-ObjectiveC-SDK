@@ -24,7 +24,7 @@
 }
 
 @property (nullable, nonatomic, strong) GBPing *ping;
-@property (nullable, nonatomic, strong) __block NSDictionary *pingDict;
+@property (nullable, nonatomic, strong) __block NSMutableDictionary *pingDict;
 
 @property (nonatomic) BOOL pingReady;
 
@@ -37,7 +37,7 @@
     self = [super init];
     if (self)
     {
-        _pingDict = [NSDictionary dictionary];
+        _pingDict = [NSMutableDictionary dictionary];
         
         _ping               = [[GBPing alloc] init];
         _ping.host          = @"8.8.8.8";
@@ -57,9 +57,9 @@
 
 - (void)startPinging
 {
-    totalNumberOfPackets = 0;
-    numberOfPacketLosts	 = 0;
-    averageRTT			 = 0;
+    totalNumberOfPackets = 1;
+    numberOfPacketLosts	 = 1;
+    averageRTT			 = 1;
 
     _pingReady = false;
     
@@ -138,7 +138,7 @@
 
 #pragma mark - Monitor Setting
 
-- (nullable NSDictionary *)getMonitorSetting
+- (nullable NSMutableDictionary *)getMonitorSetting
 {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     return [ud objectForKey:PINGKEY];

@@ -32,4 +32,6 @@
 
 - (BOOL)checkForEmptySpace;
 
+- (BOOL)checkFillQueue;
+
 @end

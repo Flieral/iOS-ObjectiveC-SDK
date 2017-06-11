@@ -29,14 +29,14 @@
 
 - (void)getMethodWithQueryString:(nonnull NSString *)queryString
                       Parameters:(nullable NSObject *)parameters
-                        Progress:(nullable void (^)(NSProgress  * _Nonnull downloadProgress)) progressBlock
+                        Progress:(nullable void (^)(NSProgress  * _Nullable downloadProgress)) progressBlock
                     SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                      failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
     [[FlieralAPIManager sharedManager] GET:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
                                 parameters:parameters
                                   progress:^(NSProgress * _Nonnull downloadProgress) {
-                                      progressBlock(downloadProgress);
+                                    
                                   } success:^(NSURLSessionDataTask *task, id responseObject) {
                                       successBlock(task, responseObject);
                                   } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -60,14 +60,14 @@
 
 - (void)postMethodWithQueryString:(nonnull NSString *)queryString
                        Parameters:(nullable NSObject *)parameters
-                         Progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) progressBlock
+                         Progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) progressBlock
                      SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                       failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
     [[FlieralAPIManager sharedManager] POST:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
                                  parameters:parameters
                                    progress:^(NSProgress * _Nonnull downloadProgress) {
-                                       progressBlock(downloadProgress);
+                                       
                                    } success:^(NSURLSessionDataTask *task, id responseObject) {
                                        successBlock(task, responseObject);
                                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -108,16 +108,20 @@
                          SuccessBlock:(nullable void (^)(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath)) successBlock
                           failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock
 {
-    NSURL *URL = [NSURL URLWithString:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *URL = [NSURL URLWithString:[@"http://192.168.1.3:3000/api/" stringByAppendingString:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     
-    [[FlieralAPIManager sharedManager] downloadTaskWithRequest:request progress:nil destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL * _Nullable(NSURL * _Nullable targetPath, NSURLResponse * _Nullable response) {
         return path;
-    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+    } completionHandler:^(NSURLResponse * _Nullable response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         if (error)
             failedBlock(error);
         successBlock(response, filePath);
     }];
+    [downloadTask resume];
 }
 
 @end

@@ -12,7 +12,7 @@
 
 #pragma mark - Placement Life Cycle
 
-- (nullable id)initWithModel:(nonnull NSDictionary *)modelInstance
+- (nullable id)initWithModel:(nonnull NSMutableDictionary *)modelInstance
 {
 	self = [super init];
 	if (self)
@@ -58,18 +58,18 @@
 
 #pragma mark - Dictionary Format of Data
 
-- (nullable NSDictionary *)getAnnouncerModel
+- (nullable NSMutableDictionary *)getAnnouncerModel
 {
-    NSDictionary *dict = [NSDictionary dictionary];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setValue:_subcampaignHashID   forKey:@"subcampaignHashId"];
     [dict setValue:_campaignHashID      forKey:@"campaignHashId"];
     [dict setValue:_announcerHashID     forKey:@"announcerHashId"];
     return dict;
 }
 
-- (nullable NSDictionary *)getPublisherModel
+- (nullable NSMutableDictionary *)getPublisherModel
 {
-    NSDictionary *dict = [NSDictionary dictionary];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setValue:_placementHashID     forKey:@"placementHashId"];
     [dict setValue:_applicationHashID   forKey:@"applicationHashId"];
     [dict setValue:_publisherHashID     forKey:@"publisherHashId"];

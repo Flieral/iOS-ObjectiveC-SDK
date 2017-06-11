@@ -10,12 +10,12 @@
 
 @interface CacheModel : NSObject <NSCoding>
 
-- (nonnull instancetype)initWithModel:(nonnull NSDictionary *)model;
+- (nonnull instancetype)initWithModel:(nonnull NSMutableDictionary *)model;
 
 @property (nonatomic, strong, nullable) NSString* verb;
 
 @property (nonatomic, strong, nullable) NSString* requestUrl;
 
-@property (nonatomic, strong, nullable) NSDictionary* payload;
+@property (nonatomic, strong, nullable) NSMutableDictionary* payload;
 
 @end

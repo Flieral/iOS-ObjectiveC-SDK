@@ -12,7 +12,7 @@
 
 @optional
 
-- (void)settingResponse:(nonnull NSDictionary *)setting;
+- (void)settingResponse:(nonnull NSMutableDictionary *)setting;
 
 @end
 
@@ -24,9 +24,9 @@
 
 - (void)startSetting;
 
-- (nullable NSDictionary *)getUserSetting;
+- (nullable NSMutableDictionary *)getUserSetting;
 
-+ (nullable NSDictionary *)getUserPublicSetting;
++ (nullable NSMutableDictionary *)getUserPublicSetting;
 
 - (void)setUserHashID:(nonnull NSString *)hashID;
 

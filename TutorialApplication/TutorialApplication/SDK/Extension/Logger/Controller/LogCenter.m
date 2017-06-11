@@ -64,7 +64,7 @@
 			
 			if ([LogCenter ReadingIsEnable]) {
 				
-				NSString *logString = [NSString stringWithFormat:@"[READING ENABLE] LOG [%@] ADDED SUCCESSFULY!",[newLog title]];
+				NSString *logString = [NSString stringWithFormat:@"[READING ENABLE] LOG [%@] %@",[newLog title], [newLog eventDescription]];
 				[LogCenter PrintDeveloperLog:logString];
 				
 				NSMutableArray *logsArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:TEMPORALLOGS]];
@@ -75,7 +75,7 @@
 			}
 			else {
 				
-				NSString *logString = [NSString stringWithFormat:@"[READING DISABLE] LOG [%@] ADDED SUCCESSFULY!",[newLog title]];
+				NSString *logString = [NSString stringWithFormat:@"[READING DISABLE] LOG [%@] %@",[newLog title], [newLog eventDescription]];
 				[LogCenter PrintDeveloperLog:logString];
 				
 				NSMutableArray *logsArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:LOGSERVICES]];

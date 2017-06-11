@@ -22,9 +22,9 @@
 
 @property (nonatomic, strong) NSURL     * _Nonnull contentURL;
 
-- (nullable id)initWithModel:(nonnull NSDictionary *)modelInstance;
+- (nullable id)initWithModel:(nonnull NSMutableDictionary *)modelInstance;
 
-- (nullable NSDictionary *)getAnnouncerModel;
-- (nullable NSDictionary *)getPublisherModel;
+- (nullable NSMutableDictionary *)getAnnouncerModel;
+- (nullable NSMutableDictionary *)getPublisherModel;
 
 @end

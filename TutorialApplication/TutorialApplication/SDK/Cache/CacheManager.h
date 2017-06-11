@@ -16,7 +16,7 @@
 
 - (void)sendCacheToBackend;
 
-- (void)addNewCacheModel:(nonnull NSDictionary *)model;
+- (void)addNewCacheModel:(nonnull NSMutableDictionary *)model;
 
 - (void)removeCacheModelAtIndex:(NSInteger)index;
 

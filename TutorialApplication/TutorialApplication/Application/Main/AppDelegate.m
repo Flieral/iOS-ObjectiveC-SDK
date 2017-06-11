@@ -30,8 +30,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
-    NSDictionary *dict = [NSDictionary dictionary];
-    [dict setValue:@"logEnable" forKey:@"true"];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setValue:@"true" forKey:@"logEnable"];
     
     [[FlieralSDKEngine SDKEngine] AddSetting:dict];
     [[FlieralSDKEngine SDKEngine] Authenticate:PUBLISHERID ApplicationHashID:APPLICATIONID];

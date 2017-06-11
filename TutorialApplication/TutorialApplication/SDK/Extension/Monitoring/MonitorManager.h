@@ -12,7 +12,7 @@
 
 @optional
 
-- (void)monitorResponse:(nonnull NSDictionary *)monitor;
+- (void)monitorResponse:(nonnull NSMutableDictionary *)monitor;
 
 @end
 
@@ -24,6 +24,6 @@
 
 - (void)startPinging;
 
-- (nullable NSDictionary *)getMonitorSetting;
+- (nullable NSMutableDictionary *)getMonitorSetting;
 
 @end

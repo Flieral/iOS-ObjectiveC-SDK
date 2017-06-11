@@ -12,13 +12,13 @@
 
 @implementation APIManager
 
-+ (void)sendAuthenticationToBackend:(nonnull NSDictionary *)information
++ (void)sendAuthenticationToBackend:(nonnull NSMutableDictionary *)information
                        SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                         failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
     NSString *queryString = [NSString stringWithFormat:@"?publisherHashId=%@&applicationHashId=%@", [information valueForKey:FLPUBLISHERHASHIDKEY], [information valueForKey:FLAPPLICATIONHASHIDKEY]];
     
-    [[RestAPI sharedService] postMethodWithQueryString:[@"/contentManager/authorization" stringByAppendingString:queryString] Parameters:information Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [[RestAPI sharedService] postMethodWithQueryString:[@"contentManager/authorization" stringByAppendingString:queryString] Parameters:information Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         successBlock(task, responseObject);
         
@@ -28,11 +28,11 @@
     }];
 }
 
-+ (void)sendReportToBackend:(nonnull NSDictionary *)information
++ (void)sendReportToBackend:(nonnull NSMutableDictionary *)information
                SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                 failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
-    [[RestAPI sharedService] postMethodWithQueryString:@"/statistics" Parameters:information Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [[RestAPI sharedService] postMethodWithQueryString:@"statistics" Parameters:information Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         successBlock(task, responseObject);
         
@@ -43,10 +43,11 @@
 }
 
 + (void)sendRequestForContent:(nonnull NSArray *)payload
+                   userHashId:(nonnull NSString *)userID
                  SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                   failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
-    [[RestAPI sharedService] postMethodWithQueryString:@"/contentManager/requestForContent" Parameters:payload Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [[RestAPI sharedService] postMethodWithQueryString:[@"contentManager/requestForContent" stringByAppendingFormat:@"?userId=%@", userID] Parameters:payload Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         successBlock(task, responseObject);
         
@@ -56,15 +57,14 @@
     }];
 }
 
-+ (void)sendUserInformation:(nonnull NSDictionary *)information
++ (void)sendUserInformation:(nonnull NSMutableDictionary *)information
                SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                 failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
     NSString *userID = [information valueForKey:@"userId"];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:information];
-    [dict removeObjectForKey:@"userId"];
+    [information removeObjectForKey:@"userId"];
     
-    [[RestAPI sharedService] putMethodWithQueryString:[@"/interactions/saveInformation" stringByAppendingFormat:@"?userId=%@", userID] Parameters:dict SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [[RestAPI sharedService] putMethodWithQueryString:[@"interactions/saveInformation" stringByAppendingFormat:@"?userId=%@", userID] Parameters:information SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         successBlock(task, responseObject);
         
@@ -97,7 +97,7 @@
 + (void)getUserHashIDWithSuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
                           failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock
 {
-    [[RestAPI sharedService] getMethodWithQueryString:@"/interactions/generateUserHashId" Parameters:nil Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [[RestAPI sharedService] getMethodWithQueryString:@"interactions/generateUserHashId" Parameters:nil Progress:nil SuccessBlock:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         
         successBlock(task, responseObject);
         
@@ -107,12 +107,12 @@
     }];
 }
 
-+ (void)downloadContentWithInformation:(nonnull NSDictionary *)information
++ (void)downloadContentWithInformation:(nonnull NSMutableDictionary *)information
                                   Path:(nonnull NSURL *)path
                           SuccessBlock:(nullable void (^)(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath)) successBlock
                            failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock
 {
-    NSString *url = [NSString stringWithFormat:@"/containers/%@/download/%@", [information valueForKey:@"campaignHashId"], [information valueForKey:@"subcampaignHashId"]];
+    NSString *url = [NSString stringWithFormat:@"containers/%@/download/%@.html", [information valueForKey:@"campaignHashId"], [information valueForKey:@"subcampaignHashId"]];
     [[RestAPI sharedService] downloadMethodWithQueryString:url Path:path SuccessBlock:^(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath) {
         
         successBlock(response, filePath);

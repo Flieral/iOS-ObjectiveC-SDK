@@ -147,4 +147,11 @@
     return false;
 }
 
+- (BOOL)checkFillQueue
+{
+    if (_data.count > 0)
+        return true;
+    return false;
+}
+
 @end

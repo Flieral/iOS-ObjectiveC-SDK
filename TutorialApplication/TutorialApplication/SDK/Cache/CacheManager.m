@@ -42,6 +42,10 @@
     [self loadCaches];
     
     NSArray *tempArray = [self getAllCacheModels];
+    
+    if ([tempArray count] == 0)
+        return;
+    
     [self removeAllCacheModels];
     
     for (int i = 0; i < [tempArray count]; i++)
@@ -87,7 +91,7 @@
 
 #pragma mark - Cache Life Cycle
 
-- (void)addNewCacheModel:(nonnull NSDictionary *)model
+- (void)addNewCacheModel:(nonnull NSMutableDictionary *)model
 {
     CacheModel *cache = [[CacheModel alloc] initWithModel:model];
     [_cacheArray addObject:cache];

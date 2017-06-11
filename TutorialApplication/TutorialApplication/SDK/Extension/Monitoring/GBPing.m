@@ -211,11 +211,11 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
         
         if (!success) {
             //construct an error
-            NSDictionary *userInfo;
+            NSMutableDictionary *userInfo;
             NSError *error;
             
             if (streamError.domain == kCFStreamErrorDomainNetDB) {
-                userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                             [NSNumber numberWithInteger:streamError.error], kCFGetAddrInfoFailureKey,
                             nil
                             ];

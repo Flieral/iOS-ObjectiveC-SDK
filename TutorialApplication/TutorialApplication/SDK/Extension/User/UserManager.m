@@ -12,6 +12,7 @@
 #import "APIManager.h"
 #import "Reachability.h"
 #import <sys/utsname.h>
+#import <UIKit/UIKit.h>
 
 #define UserKEY				@"SettingStorageKey"
 
@@ -20,7 +21,7 @@
     Reachability *internetReachabilityChecker;
 }
 
-@property (nonnull, nonatomic, strong) __block NSDictionary *settingDict;
+@property (nonnull, nonatomic, strong) __block NSMutableDictionary *settingDict;
 
 @property (nonatomic) BOOL settingReady;
 
@@ -35,7 +36,7 @@
     {
         internetReachabilityChecker = [Reachability reachabilityForInternetConnection];
         
-        _settingDict = [NSDictionary dictionary];
+        _settingDict = [NSMutableDictionary dictionary];
         
         [_settingDict setValue:[self getLanguageCode]   forKey:@"language"];
         [_settingDict setValue:[self getDevice]         forKey:@"device"];
@@ -69,7 +70,7 @@
     [APIManager getUserSettingFromIPAPISuccessBlock:^(NSData * _Nonnull data, NSURLResponse * _Nonnull response) {
 
         NSError *errorJson;
-        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&errorJson];
+        NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&errorJson];
         
         [_settingDict setValue:[responseDict valueForKey:@"countryCode"]    forKey:@"country"];
         [_settingDict setValue:[responseDict valueForKey:@"regionName"]     forKey:@"city"];
@@ -98,20 +99,22 @@
 
 - (NSString *)getLanguageCode
 {
-    return [[[NSLocale preferredLanguages] objectAtIndex:0] uppercaseString];
+    NSString *lang = [[[NSLocale preferredLanguages] objectAtIndex:0] lowercaseString];
+    return [lang componentsSeparatedByString:@"-"][0];
 }
 
 - (NSString *)getDevice
 {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    return [self platformType:[NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding]];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+        return @"Phone";
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        return @"Tablet";
+    return @"Mobile";
 }
 
 - (NSString *)getOS
 {
-    return @"iOS";
+    return @"Mobile: iOS";
 }
 
 - (NSString *)getUserLabel
@@ -154,7 +157,7 @@
 
 - (BOOL)checkUserHashID
 {
-    if ([self getUserHashID] == (id)[NSNull null])
+    if (![self getUserHashID])
         return false;
     return true;
 }
@@ -174,17 +177,17 @@
 
 #pragma mark - User Setting
 
-- (nullable NSDictionary *)getUserSetting
+- (nullable NSMutableDictionary *)getUserSetting
 {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     return [ud objectForKey:UserKEY];
 }
 
-+ (nullable NSDictionary *)getUserPublicSetting
++ (nullable NSMutableDictionary *)getUserPublicSetting
 {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = [NSDictionary dictionary];
-    NSDictionary *settingDict = [ud objectForKey:UserKEY];
+    NSMutableDictionary *dict           = [NSMutableDictionary dictionary];
+    NSMutableDictionary *settingDict    = [ud objectForKey:UserKEY];
     
     [dict setValue:[settingDict valueForKey:@"language"]       forKey:@"language"];
     [dict setValue:[settingDict valueForKey:@"device"]         forKey:@"device"];

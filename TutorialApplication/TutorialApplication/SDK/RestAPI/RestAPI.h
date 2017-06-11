@@ -14,7 +14,7 @@
 
 - (void)getMethodWithQueryString:(nonnull NSString *)queryString
 					  Parameters:(nullable NSObject *)parameters
-						Progress:(nullable void (^)(NSProgress  * _Nonnull downloadProgress)) progressBlock
+						Progress:(nullable void (^)(NSProgress  * _Nullable downloadProgress)) progressBlock
 					SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
 					 failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
 
@@ -25,7 +25,7 @@
 
 - (void)postMethodWithQueryString:(nonnull NSString *)queryString
 					   Parameters:(nullable NSObject *)parameters
-						 Progress:(nullable void (^)(NSProgress * _Nonnull downloadProgress)) progressBlock
+						 Progress:(nullable void (^)(NSProgress * _Nullable downloadProgress)) progressBlock
 					 SuccessBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, _Nonnull id responseObject)) successBlock
 					  failedBlock:(nullable void (^)(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error)) failedBlock;
 
