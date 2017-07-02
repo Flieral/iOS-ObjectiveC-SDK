@@ -8,6 +8,7 @@
 
 #import "RestAPI.h"
 #import "FlieralAPIManager.h"
+#import "PublicHeaders.h"
 
 @implementation RestAPI
 
@@ -108,7 +109,7 @@
                          SuccessBlock:(nullable void (^)(NSURLResponse * _Nonnull response, NSURL * _Nonnull filePath)) successBlock
                           failedBlock:(nullable void (^)(NSError * _Nonnull error)) failedBlock
 {
-    NSURL *URL = [NSURL URLWithString:[@"http://192.168.1.3:3000/api/" stringByAppendingString:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    NSURL *URL = [NSURL URLWithString:[[NSString stringWithFormat:@"http://%@:3000/api/", SERVERADDRESS] stringByAppendingString:[queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];

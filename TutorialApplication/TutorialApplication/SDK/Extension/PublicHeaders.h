@@ -37,4 +37,6 @@
 
 #define FLCONTENTTIMERKEY               @"Flieral:Content:SaveTime:"
 
+#define SERVERADDRESS                   @"192.168.1.3"
+
 #endif

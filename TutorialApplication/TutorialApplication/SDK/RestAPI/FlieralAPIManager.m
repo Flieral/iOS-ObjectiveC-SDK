@@ -8,6 +8,7 @@
 
 #import "FlieralAPIManager.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "PublicHeaders.h"
 
 @implementation FlieralAPIManager
 
@@ -34,7 +35,7 @@
 	static FlieralAPIManager *_sharedManager = nil;
 	
 	dispatch_once(&pred, ^{
-		_sharedManager = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://192.168.1.3:3015/api"]];
+		_sharedManager = [[self alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:3015/api", SERVERADDRESS]]];
 	});
 	
 	return _sharedManager;

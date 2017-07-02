@@ -9,16 +9,16 @@
 #import "AppDelegate.h"
 #import "FlieralSDKEngine.h"
 
-#define PUBLISHERID             @"59398e836f16aeabd64fcf84"
-#define APPLICATIONID           @"59398f1f6f16aeabd64fcf85"
+#define PUBLISHERID             @""
+#define APPLICATIONID           @""
 
-#define FIRST_PLACEMENT         @"593a381a6f16aeabd64fcf86"
-#define SECOND_PLACEMENT        @"593a385d6f16aeabd64fcf87"
-#define THIRD_PLACEMENT         @"593a388b6f16aeabd64fcf88"
-#define FOURTH_PLACEMENT        @"593a38b56f16aeabd64fcf89"
-#define FIFTH_PLACEMENT         @"593a38f76f16aeabd64fcf8a"
-#define SIXTH_PLACEMENT         @"593a8364efc302b6b73807e4"
-#define SEVENTH_PLACEMENT       @"593a8392efc302b6b73807e5"
+#define FIRST_PLACEMENT         @""
+#define SECOND_PLACEMENT        @""
+#define THIRD_PLACEMENT         @""
+#define FOURTH_PLACEMENT        @""
+#define FIFTH_PLACEMENT         @""
+#define SIXTH_PLACEMENT         @""
+#define SEVENTH_PLACEMENT       @""
 
 
 @interface AppDelegate ()
@@ -34,6 +34,11 @@
     [dict setValue:@"true" forKey:@"logEnable"];
     
     [[FlieralSDKEngine SDKEngine] AddSetting:dict];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"placementInput" ofType:@"json"];
+    [[FlieralSDKEngine SDKEngine] LoadInformationFromFile:path];
+    
+/*
     [[FlieralSDKEngine SDKEngine] Authenticate:PUBLISHERID ApplicationHashID:APPLICATIONID];
     
     [[FlieralSDKEngine SDKEngine] AddPlacement:FIRST_PLACEMENT];
@@ -43,9 +48,10 @@
     [[FlieralSDKEngine SDKEngine] AddPlacement:FIFTH_PLACEMENT];
     [[FlieralSDKEngine SDKEngine] AddPlacement:SIXTH_PLACEMENT];
     [[FlieralSDKEngine SDKEngine] AddPlacement:SEVENTH_PLACEMENT];
-
-    [[FlieralSDKEngine SDKEngine] StartEngine];
+*/
     
+    [[FlieralSDKEngine SDKEngine] StartEngine];
+
 	return YES;
 }
 

@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, VerboseType)
 
 - (void)AddSetting:(nullable NSMutableDictionary *)setting;
 
+- (void)LoadInformationFromFile:(nonnull NSString *)filePath;
+
 - (void)Authenticate:(nonnull NSString *)publisherHashID ApplicationHashID:(nonnull NSString *)applicationHashID;
 
 - (void)AddPlacement:(nonnull NSString *)placementHashID;
@@ -35,6 +37,8 @@ typedef NS_ENUM(NSInteger, VerboseType)
 - (VerboseType)VerboseLevel;
 
 - (nullable FlieralPlacementManager *)GetPlacementWithHashID:(nonnull NSString *)placementHashID;
+
+- (nullable FlieralPlacementManager *)GetPlacementFromIndex:(NSUInteger)index;
 
 - (void)SendContentRequest:(nullable NSArray *)placementsArray AfterSeconds:(int)time;
 

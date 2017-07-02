@@ -126,6 +126,25 @@
     return _verboseLevel;
 }
 
+#pragma mark - File Loading
+
+- (void)LoadInformationFromFile:(nonnull NSString *)filePath
+{
+    if (_logEnable)
+        [LogCenter NewLogTitle:@"Load File" LogDescription:@"Start Processing Data From File" UserInfo:nil];
+    
+    NSString *content = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:NULL];
+    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+    [self Authenticate:[dict objectForKey:@"accountHashId"] ApplicationHashID:[dict objectForKey:@"applicationHashId"]];
+    
+    NSArray *placementArray = (NSArray *) [dict objectForKey:@"placements"];
+    
+    for (int i = 0; i < [placementArray count]; i++)
+        [self AddPlacement:[placementArray objectAtIndex:i]];
+}
+
 #pragma mark - Authentication
 
 - (void)Authenticate:(nonnull NSString *)publisherHashID ApplicationHashID:(nonnull NSString *)applicationHashID
@@ -432,6 +451,22 @@
     if (_logEnable)
         [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Getting Placement (%@) Failed", placementHashID] UserInfo:nil];
 
+    return nil;
+}
+
+- (nullable FlieralPlacementManager *)GetPlacementFromIndex:(NSUInteger)index
+{
+    if (index <= (unsigned long)[_placementHashIdArray count])
+    {
+        if (_logEnable)
+            [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"Getting Placement (%@) Successfuly", [_placementHashIdArray objectAtIndex:index]] UserInfo:nil];
+        
+        return [_placementManagerArray objectAtIndex:index];
+    }
+    
+    if (_logEnable)
+        [LogCenter NewLogTitle:@"Placement Manager" LogDescription:@"Getting Placement Failed" UserInfo:nil];
+    
     return nil;
 }
 
