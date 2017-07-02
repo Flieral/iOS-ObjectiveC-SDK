@@ -27,6 +27,7 @@
 		A782E7F61EDEC8DD00D4FF92 /* CacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7F51EDEC8DD00D4FF92 /* CacheModel.m */; };
 		A782E7F91EDEC92A00D4FF92 /* CacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7F81EDEC92A00D4FF92 /* CacheManager.m */; };
 		A782E7FF1EDFF53E00D4FF92 /* PlacementHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A782E7FE1EDFF53E00D4FF92 /* PlacementHelper.m */; };
+		A7A902361F08D87F00F59915 /* placementInput.json in Resources */ = {isa = PBXBuildFile; fileRef = A7A902351F08D87F00F59915 /* placementInput.json */; };
 		A7F485261D92DBD60060A057 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F485251D92DBD60060A057 /* SystemConfiguration.framework */; };
 		A7F4852A1D92DC500060A057 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F485291D92DC500060A057 /* Reachability.m */; };
 		A7F485311D92E00D0060A057 /* GBPing.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F4852D1D92E00D0060A057 /* GBPing.m */; };
@@ -91,6 +92,7 @@
 		A782E7F81EDEC92A00D4FF92 /* CacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CacheManager.m; path = SDK/Cache/CacheManager.m; sourceTree = "<group>"; };
 		A782E7FD1EDFF53E00D4FF92 /* PlacementHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementHelper.h; path = SDK/Placement/PlacementHelper.h; sourceTree = "<group>"; };
 		A782E7FE1EDFF53E00D4FF92 /* PlacementHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementHelper.m; path = SDK/Placement/PlacementHelper.m; sourceTree = "<group>"; };
+		A7A902351F08D87F00F59915 /* placementInput.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = placementInput.json; path = Application/Main/placementInput.json; sourceTree = "<group>"; };
 		A7F485251D92DBD60060A057 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7F485281D92DC500060A057 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SDK/Extension/Reachability/Reachability.h; sourceTree = "<group>"; };
 		A7F485291D92DC500060A057 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SDK/Extension/Reachability/Reachability.m; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		A73019081D8C418F006C8B64 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				A7A902351F08D87F00F59915 /* placementInput.json */,
 				A730190F1D8C425E006C8B64 /* AppDelegate.h */,
 				A73019101D8C425E006C8B64 /* AppDelegate.m */,
 				A73019111D8C425E006C8B64 /* Info.plist */,
@@ -454,6 +457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7A902361F08D87F00F59915 /* placementInput.json in Resources */,
 				A73018F11D8C401A006C8B64 /* LaunchScreen.storyboard in Resources */,
 				A73018EE1D8C401A006C8B64 /* Assets.xcassets in Resources */,
 				A73018EC1D8C401A006C8B64 /* Main.storyboard in Resources */,
