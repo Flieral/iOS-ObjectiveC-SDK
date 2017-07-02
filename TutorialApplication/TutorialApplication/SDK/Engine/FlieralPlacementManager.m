@@ -41,6 +41,8 @@
 
 @property (nonatomic, strong, nonnull) UIView * parentView;
 
+@property (nonatomic, strong, nullable) UIVisualEffectView *blurEffectView;
+
 @property (nonnull, strong) NSMutableArray * placementOnlineArray;
 @property (nonnull, strong) NSMutableArray * placementOfflineArray;
 
@@ -79,7 +81,6 @@
                 [LogCenter NewLogTitle:@"Placement Manager" LogDescription:[NSString stringWithFormat:@"(%@) Loading Placement Manager Pointer Successfuly", placementHashId] UserInfo:nil];
 
             self = [self loadPlacementManager:placementHashId];
-//            [self loadQueuesForPlacementManager:placementHashId];
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
@@ -483,7 +484,7 @@
     }
     
     NSMutableDictionary *actionDict     = [NSMutableDictionary dictionary];
-    NSString *time = [NSString stringWithFormat:@"%i", (int)([[NSDate date] timeIntervalSince1970] * 1000)];
+    NSString *time = [NSString stringWithFormat:@"%li", (long)([[NSDate date] timeIntervalSince1970] * 1000)];
     [actionDict     setObject:time          forKey:@"time"];
     [actionDict     setObject:@"View"       forKey:@"event"];
 
@@ -559,9 +560,15 @@
     if (!_parentView || _placementStatus != Enable || !_currentPlacementModel || !_currentPlacementView)
         return;
     
-    [_currentPlacementView removeFromSuperview];
+    [_currentPlacementView  removeFromSuperview];
     _currentPlacementView   = nil;
     _currentPlacementModel  = nil;
+    
+    if (_blurEffectView)
+    {
+        [_blurEffectView    removeFromSuperview];
+        _blurEffectView     = nil;
+    }
     
     [self EventListener:DidDisappear Details:nil];
     
@@ -599,11 +606,13 @@
                 blurEffectView.frame = _parentView.bounds;
                 blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 
+                _blurEffectView = blurEffectView;
+                
                 [_parentView addSubview:blurEffectView];
             } else {
                 _parentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
             }
-            return CGRectMake((width - (0.5 * width)) / 2, (height - (0.7 * height)) / 2, (0.5 * width), (0.7 * height));
+            return CGRectMake((width - (0.85 * width)) / 2, (height - (0.9 * height)) / 2, (0.85 * width), (0.9 * height));
             break;
         case LargeInterstitial:
             return CGRectMake(edge.x, edge.y, width, height);
