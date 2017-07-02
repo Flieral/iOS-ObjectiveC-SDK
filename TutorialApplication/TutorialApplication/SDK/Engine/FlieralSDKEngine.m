@@ -350,7 +350,7 @@
     NSMutableArray *lowArray        = [NSMutableArray array];
     NSMutableArray *averageArray    = [NSMutableArray array];
     NSMutableArray *highArray       = [NSMutableArray array];
-    NSMutableArray *deleteArray     = [NSMutableArray array];
+    NSMutableIndexSet *indexSet     = [NSMutableIndexSet indexSet];
     
     if (_readyForAlgorithm)
     {
@@ -370,15 +370,11 @@
                     [lowArray       addObject:plManager.instanceObject];
             }
             else
-                [deleteArray addObject:[NSNumber numberWithInt:i]];
+                [indexSet addIndex:i];
         }
         
-        for (int i = 0; i < [deleteArray count]; i++)
-        {
-            NSNumber *ind = [deleteArray objectAtIndex:i];
-            [_placementManagerArray removeObjectAtIndex:[ind intValue]];
-            [_placementHashIdArray  removeObjectAtIndex:[ind intValue]];
-        }
+        [_placementHashIdArray  removeObjectsAtIndexes:indexSet];
+        [_placementManagerArray removeObjectsAtIndexes:indexSet];
 
         if (_logEnable)
             [LogCenter NewLogTitle:@"SDK Engine" LogDescription:@"Running Algorithms For Engine Finished Successfuly" UserInfo:nil];
